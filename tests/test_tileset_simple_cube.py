@@ -1,3 +1,5 @@
+from py3dtiles.feature_table import FeatureTable
+from py3dtiles.batch_table import BatchTable
 import unittest
 import numpy as np
 from py3dtiles import B3dm, BoundingVolumeBox, GlTF, TriangleSoup, TileSet, Tile
@@ -87,7 +89,16 @@ class TestTileBuilder(unittest.TestCase, object):
                               0, 1, 0, 0,
                               0, 0, 0, 1])
         glTF = GlTF.from_binary_arrays(arrays, transform)
-        tile_content = B3dm.from_glTF(glTF)
+
+        ft = BatchTable()
+        batch_length = 2
+
+        ft.add_property_from_array("BATCH_LENGTH",batch_length)
+
+        bt = BatchTable()
+        ids = ["0","1"]
+        bt.add_property_from_array("id",ids)
+        tile_content = B3dm.from_glTF(glTF,ft,bt)
         tile.set_content(tile_content)
 
         # Define the TileSet that will hold the (single) tile
@@ -98,7 +109,7 @@ class TestTileBuilder(unittest.TestCase, object):
         tile_set.set_transform([1, 0, 0, 0,
                                 0, 1, 0, 0,
                                 0, 0, 1, 0,
-                                1841276.4464434995, 5172616.229383407, 0, 1])
+                                0, 0, 0, 1])
 
         tile_set.add_tile(tile)
         tile_set.add_asset_extras("Py3dTiles TestTileBuilder example.")
