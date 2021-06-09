@@ -33,15 +33,35 @@ class SchemaValidators:
             self.schemas = dict()
             self.class_names = dict()
 
-            # The directory (with a path relative to the module) where all
-            # the schema files are located:
-            relative_dir = 'py3dtiles/jsonschemas'
+            # They are two contexts of usage for this constructor that must
+            # set up the directory where all the schema files are located:
+            #  - a package developing stage where the directory is a relative 
+            #    path (within the directory layout of the sources)
+            #  - a package post-installation stage where the directory is 
+            #    absolute because it is relative to the python's directory 
+            #    path of its installed packages (that would the absolute 
+            #    sys.prefix directory path, if they where no python-eggs and
+            #    other advanced package features).
+            # 
+            # The relative directory context directory (when working within the
+            # source tree):
+            schema_directory = 'py3dtiles/jsonschemas'
+            if not os.path.isdir(schema_directory):
+                # We had no success in relative context. Could this be an 
+                # absolute path context ?
+                installed_path=pathlib.Path(__file__).parent.absolute()
+                schema_directory = os.path.join(installed_path, "jsonschemas")
+                if not os.path.isdir(schema_directory):
+                    print('Failed to establish an installed package context:')
+                    print(f'unfound directory path {schema_directory}')
+                    print('Exiting.')
+                    sys.exit(1)
 
             # sub-schemas within the same directory (provided as absolute path)
             # as the given schema. Refer to
             #     https://github.com/Julian/jsonschema/issues/98
             # for the reasons of the following parameters and call
-            base_uri = pathlib.Path(os.path.abspath(relative_dir)).as_uri() + '/'
+            base_uri = pathlib.Path(os.path.abspath(schema_directory)).as_uri() + '/'
             self.resolver = jsonschema.RefResolver(base_uri, None)
 
             self.register_schema_with_sample_list(ThreeDTilesCoreSchemas())
