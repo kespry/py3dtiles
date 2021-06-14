@@ -89,6 +89,6 @@ setup(
         'console_scripts': ['py3dtiles=py3dtiles.command_line:main'],
     },
     include_package_data=True,
-    packaged_data={"py3dtiles": ["py3dtiles/jsonschemas/*.json"]},
+    #packaged_data={"py3dtiles": ["py3dtiles/jsonschemas/*.json"]},
     zip_safe=False  # zip packaging conflicts with Numba cache (#25)
 )
