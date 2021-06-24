@@ -108,7 +108,6 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         y_max = mins_maxs[4]
         z_min = mins_maxs[2]
         z_max = mins_maxs[5]
-        # print("coucou")
         new_center = numpy.array([(x_min + x_max) / 2,
                                (y_min + y_max) / 2,
                                (z_min + z_max) / 2])
