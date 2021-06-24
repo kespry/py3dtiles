@@ -108,7 +108,6 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         y_max = mins_maxs[4]
         z_min = mins_maxs[2]
         z_max = mins_maxs[5]
-
         new_center = numpy.array([(x_min + x_max) / 2,
                                (y_min + y_max) / 2,
                                (z_min + z_max) / 2])
@@ -243,7 +242,6 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
             return
         # We reset to some dummy state of this Bounding Volume Box so we
         # can add up in place the boxes of the owner's children
-        self.set_from_list([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         print("Warning: overwriting box bounding volume.")
         for child in owner.get_children():
             # FIXME have the transform method return a new object and
