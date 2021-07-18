@@ -1,0 +1,38 @@
+os: linux
+dist: focal
+language: python
+python:
+  - "3.6"
+
+before_install:
+  - add-apt-repository universe
+  - apt-get install -y liblas-c3 libopenblas-base flake8
+
+install:
+  - pip install -e .
+  - pip install -e .[dev]
+
+addons:
+  apt:
+    update: true
+
+jobs:
+  include:
+    - stage: tests
+      script:
+        - pytest
+        - flake8 setup.py py3dtiles/
+        - py3dtiles info tests/pointCloudRGB.pnts
+    - stage: "Markdown link checks"
+      language: node_js
+      node_js: 12
+      script:
+        - npm install --global remark-cli remark-validate-links
+        - remark -u validate-links .
+        - |
+          export FAILURE_THRESHOLD=1
+          export warnings=`remark -u validate-links . 2>&1 | grep warning | grep "Link to unknown" | wc -l`
+          if [ $warnings -gt $FAILURE_THRESHOLD ]; then
+            exit 1;
+          fi
+
