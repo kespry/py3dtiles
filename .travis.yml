@@ -9,10 +9,6 @@ before_install:
   - sudo add-apt-repository universe
   - sudo apt-get install -y liblas-c3 libopenblas-base
 
-install:
-  - pip install -e .
-  - pip install pytest pytest-benchmark
-
 addons:
   apt:
     update: true
@@ -21,6 +17,9 @@ jobs:
   include:
     - stage: tests
       if: branch = Tiler
+      install:
+        - pip install -e .
+        - pip install pytest pytest-benchmark
       script:
       - |
         pytest
