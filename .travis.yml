@@ -21,9 +21,9 @@ jobs:
         - pip install -e .
         - pip install pytest pytest-benchmark
       script:
-      - |
-        pytest
-        py3dtiles info tests/pointCloudRGB.pnts
+        - |
+          pytest
+          py3dtiles info tests/pointCloudRGB.pnts
     - stage: "Markdown link checks"
       language: node_js
       node_js: 12
