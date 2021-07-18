@@ -5,8 +5,8 @@ python:
   - "3.6"
 
 before_install:
-  - add-apt-repository universe
-  - apt-get install -y liblas-c3 libopenblas-base flake8
+  - sudo add-apt-repository universe
+  - sudo apt-get install -y liblas-c3 libopenblas-base flake8
 
 install:
   - pip install -e .
