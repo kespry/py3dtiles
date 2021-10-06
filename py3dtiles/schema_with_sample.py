@@ -44,7 +44,7 @@ class SchemaWithSample:
         :param schema_file_path: path to the file holding the schema that (at
                some point) will have to be registered together to the list
                of known schemas (look for a line of the form
-                  "Draft4Validator(schema, resolver = self.resolver")
+                  "Draft7Validator(schema, resolver = self.resolver")
                WARNING: for the time being there is a strong constrain placed
                on the schema_file_path that MUST be relative to the python
                package.
