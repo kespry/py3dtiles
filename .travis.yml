@@ -1,4 +1,4 @@
-sudo: required
+os: linux
 dist: bionic
 
 language: python
@@ -7,7 +7,7 @@ python:
 
 before_install:
   - sudo add-apt-repository universe
-  - sudo apt-get install -y liblas-c3 libopenblas-base
+  - sudo apt-get install -y liblas-c3 libopenblas-base flake8
 
 addons:
   apt:
@@ -19,11 +19,11 @@ jobs:
       if: branch = Tiler
       install:
         - pip install -e .
-        - pip install pytest pytest-benchmark
+        - pip install -e .[dev]
       script:
-        - |
-          pytest
-          py3dtiles info tests/pointCloudRGB.pnts
+        - pytest
+        - flake8 setup.py py3dtiles/
+        - py3dtiles info tests/pointCloudRGB.pnts
     - stage: "Markdown link checks"
       language: node_js
       node_js: 12
