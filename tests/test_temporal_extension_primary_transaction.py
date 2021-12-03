@@ -11,10 +11,11 @@ class Test_TemporalPrimaryTransaction(unittest.TestCase):
     """
     Primary Transaction extension of the Temporal applicative extension
     """
+
     def test_basics(self):
         helper = HelperTest(lambda x: TemporalPrimaryTransaction().validate(x))
         helper.sample_file_names.append(
-                      'temporal_extension_primary_transaction_sample.json')
+            'temporal_extension_primary_transaction_sample.json')
         if not helper.check():
             self.fail()
 
@@ -46,7 +47,7 @@ class Test_TemporalPrimaryTransaction(unittest.TestCase):
         """
         json_tt = json.loads(self.build_sample().to_json())
         json_tt_reference = HelperTest().load_json_reference_file(
-                        'temporal_extension_primary_transaction_sample.json')
+            'temporal_extension_primary_transaction_sample.json')
         # We do not want to compare the identifiers (that must differ):
         del json_tt['id']
         del json_tt_reference['id']

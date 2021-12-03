@@ -10,10 +10,11 @@ class Test_BatchTableHierarchy(unittest.TestCase):
     """
     Batch Table Hierarchy (BTH) extension related tests
     """
+
     def test_basics(self):
         helper = HelperTest(lambda x: BatchTableHierarchy().validate(x))
         helper.sample_file_names.append(
-                              'batch_table_hierarchy_reference_sample.json')
+            'batch_table_hierarchy_reference_sample.json')
         if not helper.check():
             self.fail()
 
@@ -27,12 +28,12 @@ class Test_BatchTableHierarchy(unittest.TestCase):
         bth = BatchTableHierarchy()
 
         bth.add_class("Wall", ["color"])
-        bth.add_class_instance("Wall", {'color': 'white'},  [6])
-        bth.add_class_instance("Wall", {'color': 'red'},    [6, 10,11])
+        bth.add_class_instance("Wall", {'color': 'white'}, [6])
+        bth.add_class_instance("Wall", {'color': 'red'}, [6, 10, 11])
         bth.add_class_instance("Wall", {'color': 'yellow'}, [7, 11])
-        bth.add_class_instance("Wall", {'color': 'gray'},   [7])
-        bth.add_class_instance("Wall", {'color': 'brown'},  [8])
-        bth.add_class_instance("Wall", {'color': 'black'},  [8])
+        bth.add_class_instance("Wall", {'color': 'gray'}, [7])
+        bth.add_class_instance("Wall", {'color': 'brown'}, [8])
+        bth.add_class_instance("Wall", {'color': 'black'}, [8])
 
         bth.add_class("Building", ["name", "address"])
         bth.add_class_instance("Building", {'name': 'unit29',
@@ -43,8 +44,8 @@ class Test_BatchTableHierarchy(unittest.TestCase):
                                             'address': '104 Main St'}, [9])
 
         bth.add_class("Owner", ["type", "id"])
-        bth.add_class_instance("Owner", {'type': 'city',       'id': 1120})
-        bth.add_class_instance("Owner", {'type': 'resident',   'id': 1250})
+        bth.add_class_instance("Owner", {'type': 'city', 'id': 1120})
+        bth.add_class_instance("Owner", {'type': 'resident', 'id': 1250})
         bth.add_class_instance("Owner", {'type': 'commercial', 'id': 6445})
         return bth
 
@@ -62,7 +63,7 @@ class Test_BatchTableHierarchy(unittest.TestCase):
         """
         json_bth = json.loads(self.build_sample().to_json())
         json_bth_reference = HelperTest().load_json_reference_file(
-                            'batch_table_hierarchy_reference_sample.json')
+            'batch_table_hierarchy_reference_sample.json')
         if not json_bth.items() == json_bth_reference.items():
             self.fail()
 

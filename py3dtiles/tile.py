@@ -54,7 +54,7 @@ class Tile(ThreeDTilesNotion):
 
     def set_content_uri(self, uri):
         if 'content' not in self.attributes:
-            self.set_content (TileContent())
+            self.set_content(TileContent())
         self.attributes["content"].set_uri(uri)
 
     def get_content_uri(self):
@@ -85,7 +85,7 @@ class Tile(ThreeDTilesNotion):
         if not self.has_children():
             print("Warning: should have checked for existing children first?")
             # It could be that prepare_for_json() did some wipe out:
-            if not 'children' in self.attributes:
+            if 'children' not in self.attributes:
                 return list()
 
         descendants = list()

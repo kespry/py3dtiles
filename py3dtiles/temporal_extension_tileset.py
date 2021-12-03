@@ -3,7 +3,6 @@ import sys
 from .extension import Extension
 from .threedtiles_notion import ThreeDTilesNotion
 from .temporal_extension_transaction import TemporalTransaction
-from .temporal_extension_utils import temporal_extract_bounding_dates
 
 
 class TemporalTileSet(Extension, ThreeDTilesNotion):
@@ -77,5 +76,3 @@ class TemporalTileSet(Extension, ThreeDTilesNotion):
         root_tile_tbv = root_tile_bv.get_extension('3DTILES_temporal')
         self.set_start_date(root_tile_tbv.get_start_date())
         self.set_end_date(root_tile_tbv.get_end_date())
-
-

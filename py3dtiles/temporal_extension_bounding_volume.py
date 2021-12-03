@@ -5,6 +5,7 @@ from .threedtiles_notion import ThreeDTilesNotion
 from .temporal_extension_utils import temporal_extract_bounding_dates
 from .bounding_volume_box import BoundingVolumeBox   # Ooops
 
+
 class TemporalBoundingVolume(Extension, ThreeDTilesNotion):
     """
     Temporal Bounding Volume is an Extension of a Bounding Volume.

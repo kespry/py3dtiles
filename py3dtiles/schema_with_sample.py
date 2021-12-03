@@ -11,6 +11,7 @@ class SchemaWithSample:
     this class is to be used with the method
           SchemaValidators::register_schema_with_sample()
     """
+
     def __init__(self, key):
         """
         :param key: the name of the class (implementing ThreeDTilesNotion)
@@ -62,13 +63,13 @@ class SchemaWithSample:
 
     def set_directory(self, directory):
         # Refer to the code documentation of SchemaValidators.__init__() for
-        # the comment on pre-install/post-install concerns.  
-        
+        # the comment on pre-install/post-install concerns.
+
         if os.path.isdir(directory):
             self.schema_directory = directory
             return
         # We had no success in local. Could this be an installed package ?
-        installed_path=pathlib.Path(__file__).parent.absolute()
+        installed_path = pathlib.Path(__file__).parent.absolute()
         self.schema_directory = os.path.join(installed_path, "..", directory)
         if not os.path.isdir(self.schema_directory):
             print('Failed to establish an installed package context:')

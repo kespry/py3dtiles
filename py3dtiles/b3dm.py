@@ -59,8 +59,7 @@ class B3dm(TileContent):
             raise RuntimeError("Invalid byte length in header")
 
         # build TileContent body
-        b_arr = (array[B3dmHeader.BYTELENGTH:h.tile_byte_length
-                 - B3dmHeader.BYTELENGTH])
+        b_arr = (array[B3dmHeader.BYTELENGTH:h.tile_byte_length - B3dmHeader.BYTELENGTH])
         b = B3dmBody.from_array(h, b_arr)
 
         # build TileContent with header and body
@@ -208,9 +207,8 @@ class B3dmBody(TileContentBody):
         # bt = BatchTable.from_array(th, bt_arr)
 
         # build glTF
-        glTF_len = (th.tile_byte_length - ft_len - bt_len
-                    - B3dmHeader.BYTELENGTH)
-        glTF_arr = array[ft_len+bt_len:ft_len+bt_len+glTF_len]
+        glTF_len = (th.tile_byte_length - ft_len - bt_len - B3dmHeader.BYTELENGTH)
+        glTF_arr = array[ft_len + bt_len:ft_len + bt_len + glTF_len]
         glTF = GlTF.from_array(glTF_arr)
 
         # build TileContent body with feature table

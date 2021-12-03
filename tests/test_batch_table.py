@@ -30,8 +30,8 @@ class Test_Batch(unittest.TestCase):
         bt.add_property_from_array("yearBuilt",
                                    [1999, 2015])
         bt.add_property_from_array("address",
-                            [{"street" : "Main Street", "houseNumber" : "1"},
-                             {"street" : "Main Street", "houseNumber" : "2"}])
+                                   [{"street": "Main Street", "houseNumber": "1"},
+                                    {"street": "Main Street", "houseNumber": "2"}])
         return bt
 
     def test_json_encoding(self):
@@ -52,9 +52,10 @@ class Test_Batch(unittest.TestCase):
         """
         json_bt = json.loads(self.build_bt_sample().to_json())
         json_reference = HelperTest().load_json_reference_file(
-                                                   'batch_table_sample.json')
+            'batch_table_sample.json')
         if not json_bt.items() == json_reference.items():
             self.fail()
+
 
 if __name__ == "__main__":
     unittest.main()

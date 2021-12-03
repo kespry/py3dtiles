@@ -5,6 +5,7 @@ from enum import Enum
 from abc import ABC, abstractmethod
 from .threedtiles_notion import ThreeDTilesNotion
 
+
 class TileContent(ABC, ThreeDTilesNotion):
 
     def __init__(self):
@@ -39,6 +40,7 @@ class TileContent(ABC, ThreeDTilesNotion):
 
     def get_uri(self):
         return self.attributes["uri"]
+
 
 class TileContentType(Enum):
 

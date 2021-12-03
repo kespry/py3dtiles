@@ -8,7 +8,7 @@ class Test_Tile(unittest.TestCase):
     def test_basics(self):
         helper = HelperTest(lambda x: Tile().validate(x))
         helper.sample_file_names.append(
-                              'Tile_box_bounding_volume_sample.json')
+            'Tile_box_bounding_volume_sample.json')
         if not helper.check():
             self.fail()
 

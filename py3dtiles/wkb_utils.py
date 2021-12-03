@@ -2,7 +2,6 @@ import numpy as np
 import math
 import struct
 from .earcut import earcut
-from .bounding_volume import BoundingVolume
 from .bounding_volume_box import BoundingVolumeBox
 
 
@@ -208,14 +207,14 @@ def parse(wkb):
     for i in range(0, geomNb):
         offset += 5  # struct.unpack('bI', wkb[offset:offset+5])[0]
         # 1 (byteorder), 1003 (Polygon)
-        lineNb = struct.unpack(bo + 'I', wkb[offset:offset+4])[0]
+        lineNb = struct.unpack(bo + 'I', wkb[offset:offset + 4])[0]
         offset += 4
         polygon = []
         for j in range(0, lineNb):
-            pointNb = struct.unpack(bo + 'I', wkb[offset:offset+4])[0]
+            pointNb = struct.unpack(bo + 'I', wkb[offset:offset + 4])[0]
             offset += 4
             line = []
-            for k in range(0, pointNb-1):
+            for k in range(0, pointNb - 1):
                 pt = np.array(struct.unpack(bo + pntUnpack, wkb[offset:offset
                               + pntOffset]), dtype=np.float32)
                 offset += pntOffset
@@ -230,10 +229,10 @@ def triangulate(polygon, additionalPolygons=[]):
     """
     Triangulates 3D polygons
     """
-    vectProd = np.array([0,0,0],dtype=np.float32)
+    vectProd = np.array([0, 0, 0], dtype=np.float32)
     for i in range(len(polygon[0])):
-        vect1 = polygon[0][(i)%len(polygon[0])] - polygon[0][(i+1)%len(polygon[0])]
-        vect2 = polygon[0][(i)%len(polygon[0])] - polygon[0][(i-1)%len(polygon[0])]
+        vect1 = polygon[0][(i) % len(polygon[0])] - polygon[0][(i + 1) % len(polygon[0])]
+        vect2 = polygon[0][(i) % len(polygon[0])] - polygon[0][(i - 1) % len(polygon[0])]
         vect1 /= np.linalg.norm(vect1)
         vect2 /= np.linalg.norm(vect2)
         vectProd += np.cross(vect1, vect2)
@@ -266,7 +265,7 @@ def triangulate(polygon, additionalPolygons=[]):
 
     arrays = [[] for _ in range(len(additionalPolygons) + 1)]
     for i in range(0, len(trianglesIdx), 3):
-        t = trianglesIdx[i:i+3]
+        t = trianglesIdx[i:i + 3]
         p0 = unflatten(polygon, holes, t[0])
         p1 = unflatten(polygon, holes, t[1])
         p2 = unflatten(polygon, holes, t[2])
@@ -278,7 +277,7 @@ def triangulate(polygon, additionalPolygons=[]):
             arrays[0].append([p1, p0, p2])
         else:
             arrays[0].append([p0, p1, p2])
-        for array, p in zip(arrays[1:],  additionalPolygons):
+        for array, p in zip(arrays[1:], additionalPolygons):
             pp0 = unflatten(p, holes, t[0])
             pp1 = unflatten(p, holes, t[1])
             pp2 = unflatten(p, holes, t[2])

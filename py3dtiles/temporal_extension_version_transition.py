@@ -49,4 +49,3 @@ class TemporalVersionTransition(ThreeDTilesNotion):
 
     def append_transaction(self, transaction):
         self.attributes['transactions'].append(transaction)
-

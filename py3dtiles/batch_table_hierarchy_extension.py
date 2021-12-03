@@ -39,7 +39,7 @@ class BatchTableHierarchy(Extension, ThreeDTilesNotion):
 
     # properties: dictionary with the same attributes as class instances
     # parent indices refers to the index of the parent in the batch table
-    def add_class_instance(self, class_name, properties, parent_indexes = []):
+    def add_class_instance(self, class_name, properties, parent_indexes=[]):
         """
         :param class_name: a class name of class (type) previously
                            defined with the add_class() method
@@ -56,4 +56,3 @@ class BatchTableHierarchy(Extension, ThreeDTilesNotion):
         self.attributes['classIds'].append(index)
         self.attributes['parentCounts'].append(len(parent_indexes))
         self.attributes['parentIds'].extend(parent_indexes)
-

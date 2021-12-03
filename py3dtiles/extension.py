@@ -5,7 +5,8 @@ class Extension(object):
     """
     An instance of some ExtensionType.
     """
-    def __init__(self, name = None):
+
+    def __init__(self, name=None):
         self.name = name
 
     def set_extension_name(self, name):

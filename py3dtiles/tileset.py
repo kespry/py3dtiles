@@ -51,7 +51,7 @@ class TileSet(ThreeDTilesNotion):
             "$schema": "http://json-schema.org/draft-04/schema",
             "title": "Extras",
             "description": comment
-            }
+        }
 
     def prepare_for_json(self):
         """
@@ -59,7 +59,7 @@ class TileSet(ThreeDTilesNotion):
         """
         if not self.attributes["geometricError"]:
             print("Warning: defaulting TileSet's unset 'Geometric Error'.")
-            self.set_geometric_error(500.0) # FIXME: chose a decent default
+            self.set_geometric_error(500.0)  # FIXME: chose a decent default
         if not self.get_root_tile():
             print('A TileSet must have a root entry')
             sys.exit(1)
@@ -115,4 +115,3 @@ class TileSet(ThreeDTilesNotion):
         # Terminate with the writing of the tiles content:
         for index, tile in enumerate(all_tiles):
             tile.write_content(directory)
-

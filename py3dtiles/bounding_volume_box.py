@@ -32,6 +32,7 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
     volumes this class resolves to compute the "canonical" fitting/enclosing
     box i.e. a box that is parallel to the coordinate axis.
     """
+
     def __init__(self):
         super().__init__()
         self.attributes['box'] = None
@@ -44,7 +45,7 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         Translate the box center with the given offset "vector"
         :param offset: the 3D vector by which the box should be translated
         """
-        for i in range(0,3):
+        for i in range(0, 3):
             self.attributes["box"][i] += offset[i]
 
     def transform(self, transform):
@@ -55,11 +56,11 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         # FIXME: the following code only uses the first three coordinates
         # of the transformation matrix (and basically ignores the fourth
         # column of transform). This looks like some kind of mistake...
-        rotation = numpy.array([ transform[0:3],
-                                 transform[4:7],
-                                 transform[8:11]])
+        rotation = numpy.array([transform[0:3],
+                                transform[4:7],
+                                transform[8:11]])
 
-        center      = self.attributes["box"][0: 3: 1]
+        center = self.attributes["box"][0: 3: 1]
         x_half_axis = self.attributes["box"][3: 6: 1]
         y_half_axis = self.attributes["box"][6: 9: 1]
         z_half_axis = self.attributes["box"][9:12: 1]
@@ -85,12 +86,12 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
                 (3D) points and that is parallel to the coordinate axis.
         """
         return BoundingVolumeBox.get_box_array_from_mins_maxs(
-            [ min(c[0] for c in points),
-              min(c[1] for c in points),
-              min(c[2] for c in points),
-              max(c[0] for c in points),
-              max(c[1] for c in points),
-              max(c[2] for c in points) ])
+            [min(c[0] for c in points),
+             min(c[1] for c in points),
+             min(c[2] for c in points),
+             max(c[0] for c in points),
+             max(c[1] for c in points),
+             max(c[2] for c in points)])
 
     @staticmethod
     def get_box_array_from_mins_maxs(mins_maxs):
@@ -109,8 +110,8 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         z_min = mins_maxs[2]
         z_max = mins_maxs[5]
         new_center = numpy.array([(x_min + x_max) / 2,
-                               (y_min + y_max) / 2,
-                               (z_min + z_max) / 2])
+                                  (y_min + y_max) / 2,
+                                  (z_min + z_max) / 2])
         new_x_half_axis = numpy.array([(x_max - x_min) / 2, 0, 0])
         new_y_half_axis = numpy.array([0, (y_max - y_min) / 2, 0])
         new_z_half_axis = numpy.array([0, 0, (z_max - z_min) / 2])
@@ -132,7 +133,7 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
 
     def set_from_points(self, points):
         self.attributes["box"] = \
-                            BoundingVolumeBox.get_box_array_from_point(points)
+            BoundingVolumeBox.get_box_array_from_point(points)
 
     def set_from_mins_maxs(self, mins_maxs):
         """
@@ -150,7 +151,7 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         if not self.is_valid():
             sys.exit(1)
 
-        center      = self.attributes["box"][0: 3: 1]
+        center = self.attributes["box"][0: 3: 1]
         x_half_axis = self.attributes["box"][3: 6: 1]
         y_half_axis = self.attributes["box"][6: 9: 1]
         z_half_axis = self.attributes["box"][9:12: 1]
@@ -160,18 +161,18 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         z_axis = z_half_axis * 2
 
         # The eight cornering points of the box
-        tmp   = numpy.subtract(center,x_half_axis)
-        tmp   = numpy.subtract(tmp,   y_half_axis)
+        tmp = numpy.subtract(center, x_half_axis)
+        tmp = numpy.subtract(tmp, y_half_axis)
 
-        o     = numpy.subtract(tmp,   z_half_axis)
-        ox    = numpy.add(o, x_axis)
-        oy    = numpy.add(o, y_axis)
-        oxy   = numpy.add(o, numpy.add(x_axis, y_axis))
+        o = numpy.subtract(tmp, z_half_axis)
+        ox = numpy.add(o, x_axis)
+        oy = numpy.add(o, y_axis)
+        oxy = numpy.add(o, numpy.add(x_axis, y_axis))
 
-        oz    = numpy.add(o, z_axis)
-        oxz   = numpy.add(oz, x_axis)
-        oyz   = numpy.add(oz, y_axis)
-        oxyz  = numpy.add(oz, numpy.add(x_axis, y_axis))
+        oz = numpy.add(o, z_axis)
+        oxz = numpy.add(oz, x_axis)
+        oyz = numpy.add(oz, y_axis)
+        oxyz = numpy.add(oz, numpy.add(x_axis, y_axis))
 
         return [o, ox, oy, oxy, oz, oxz, oyz, oxyz]
 
@@ -259,22 +260,22 @@ if __name__ == '__main__':
     box = BoundingVolumeBox()
 
     # Getting canonical first example
-    box.set_from_list([2,3,4,  2,0,0,  0,3,0,  0,0,4])
+    box.set_from_list([2, 3, 4, 2, 0, 0, 0, 3, 0, 0, 0, 4])
     print("This aligned box and its canonical one should be identical:")
     print("         original: ", box.attributes['box'])
     print("        canonical: ", box.get_canonical_as_array())
 
     # Getting canonical second example
-    box.set_from_list([0,0,0,  1,1,0,  -1,1,0,  0,0,1])
+    box.set_from_list([0, 0, 0, 1, 1, 0, -1, 1, 0, 0, 0, 1])
     print("But when considering a rotated cube of size 2, the canonical",
           "fitting box is different:")
     print("         original: ", box.attributes['box'])
     print("        canonical: ", box.get_canonical_as_array())
 
     # Adding volumes
-    box.set_from_list([1,1,1,  1,0,0,  0,1,0,  0,0,1])
+    box.set_from_list([1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1])
     other = BoundingVolumeBox()
-    other.set_from_list([9,9,9,  1,0,0,  0,1,0,  0,0,1])
+    other.set_from_list([9, 9, 9, 1, 0, 0, 0, 1, 0, 0, 0, 1])
     print("Consider the two following box bounding volumes:")
     print("    first: ", box.attributes['box'])
     print("   second: ", other.attributes['box'])

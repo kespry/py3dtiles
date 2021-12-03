@@ -14,6 +14,8 @@ from .temporal_extension_schemas import TemporalExtensionSchemas
 # class is probably a singleton (refer to e.g.
 # https://python-patterns.guide/gang-of-four/singleton/) and should be
 # implemented as such.
+
+
 class SchemaValidators:
     """
     Dictionary holding the set of validated schemas. The dictionary key is
@@ -29,7 +31,7 @@ class SchemaValidators:
     """
     class_names = None
     """
-    Resolver is a technical mean for retrieving any possible sub-schema 
+    Resolver is a technical mean for retrieving any possible sub-schema
     indicated within a given schema through a $ref entry.
     """
     resolver = None
@@ -90,19 +92,19 @@ class SchemaValidators:
         try:
             with open(file_name, "r") as schema_file:
                 schema = json.loads(schema_file.read())
-        except:
+        except Exception:
             print(f"Unable to parse schema held in {file_name}")
             sys.exit(1)
 
         try:
             title = schema["title"]
-        except:
+        except Exception:
             print("Schema argument misses a title. Dropping extension.")
             sys.exit(1)
 
         key = schema_with_sample.get_key()
         if title in self.schemas:
-            if not key in "BoundingVolume":
+            if key not in "BoundingVolume":
                 # This is a legitimate case where some classes share the
                 # same validator
                 pass
@@ -123,16 +125,16 @@ class SchemaValidators:
         self.class_names[key] = title
 
     def get_validator(self, class_name_key):
-        if not class_name_key in self.class_names:
+        if class_name_key not in self.class_names:
             print(f"Unregistered schema (class) key {class_name_key}")
             return None
         title = self.class_names[class_name_key]
-        if not title in self.schemas:
+        if title not in self.schemas:
             print(f"Unregistered schema with title {title}")
             return None
         try:
             return self.schemas[title]["validator"]
-        except:
+        except Exception:
             print(f"Cannot find validator for schema {class_name_key}")
         return None
 

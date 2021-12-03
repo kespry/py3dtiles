@@ -18,7 +18,7 @@ from .temporal_extension_tileset import TemporalTileSet
 from .temporal_extension_transaction import TemporalTransaction
 from .temporal_extension_primary_transaction import TemporalPrimaryTransaction
 from .temporal_extension_transaction_aggregate \
-                                           import TemporalTransactionAggregate
+    import TemporalTransactionAggregate
 from .temporal_extension_version import TemporalVersion
 from .temporal_extension_version_transition import TemporalVersionTransition
 from .temporal_extension_utils import temporal_extract_bounding_dates
@@ -31,28 +31,29 @@ from .wkb_utils import TriangleSoup
 
 __version__ = '1.1.0'
 __all__ = ['B3dm',
-           'BatchTable', 
-           'BatchTableHierarchy', 
+           'BatchTable',
+           'BatchTableHierarchy',
            'BoundingVolume',
            'BoundingVolumeBox',
-           'convert_to_ecef', 
+           'convert_to_ecef',
            'SchemaValidators',
            'Extension',
-           'Feature', 
-           'GlTF', 
+           'Feature',
+           'GlTF',
            'Pnts',
-           'TemporalBatchTable', 
-           'TemporalBoundingVolume', 
-           'TemporalTileSet', 
+           'TemporalBatchTable',
+           'TemporalBoundingVolume',
+           'TemporalTileSet',
            'TemporalTransaction',
            'TemporalPrimaryTransaction',
            'TemporalTransactionAggregate',
-           'TemporalVersion', 
-           'TemporalVersionTransition', 
-           'temporal_extract_bounding_dates', 
+           'TemporalVersion',
+           'TemporalVersionTransition',
+           'temporal_extract_bounding_dates',
            'Tile',
            'TileContent',
-           'TileReader', 
+           'TileReader',
            'TileSet',
            'ThreeDTilesNotion',
-           'TriangleSoup']
+           'TriangleSoup',
+           'HelperTest']

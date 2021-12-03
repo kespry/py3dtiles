@@ -8,7 +8,7 @@ from .schema_validators import SchemaValidators
 
 class ThreeDTilesNotion(object):
     """
-    One the 3DTiles notions defined as an abstract data model through 
+    One the 3DTiles notions defined as an abstract data model through
     a schema of the 3DTiles specifications (either core of extensions).
     """
     validators = None
@@ -51,7 +51,7 @@ class ThreeDTilesNotion(object):
         if not self.has_extensions():
             print('No extension present. Exiting.')
             sys.exit(1)
-        if not extension_name in self.attributes['extensions']:
+        if extension_name not in self.attributes['extensions']:
             print(f'No extension with name {extension_name}. Exiting.')
             sys.exit(1)
         return self.attributes['extensions'][extension_name]
@@ -75,7 +75,7 @@ class ThreeDTilesNotion(object):
         validator = self.validators.get_validator(class_name_key)
         try:
             validator.validate(item)
-        except:
+        except Exception:
             if quiet:
                 print(f'Invalid item for schema {class_name_key}')
             return False
@@ -112,7 +112,7 @@ class ThreeDTilesNotion(object):
         as_json = self.to_json()
         # and make sure it respects a mandatory 4-byte alignement (refer e.g.
         # to batch table documentation)
-        as_json += ' '*(4 - len(as_json) % 4)
+        as_json += ' ' * (4 - len(as_json) % 4)
         # eventually return an array of binaries representing the
         # considered ThreeDTilesNotion
         return numpy.fromstring(as_json, dtype=numpy.uint8)

@@ -6,6 +6,8 @@ import py3dtiles.export as export
 import traceback
 
 # https://stackoverflow.com/a/43357954
+
+
 def str2bool(v):
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
         return True
@@ -44,10 +46,11 @@ def main():
             export.main(args)
         else:
             parser.print_help()
-    except Exception as e:
+    except Exception:
         traceback.print_exc()
         print('')
         parser.print_help()
+
 
 if __name__ == '__main__':
     main()

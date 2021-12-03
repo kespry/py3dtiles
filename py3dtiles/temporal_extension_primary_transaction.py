@@ -7,6 +7,7 @@ class TemporalPrimaryTransaction(TemporalTransaction):
     """
     Temporal Primary Transaction represents the atomic Transaction.
     """
+
     def __init__(self):
         TemporalTransaction.__init__(self)
         self.define_attributes()

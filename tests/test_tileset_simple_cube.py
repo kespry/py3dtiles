@@ -12,46 +12,46 @@ class TestTileBuilder(unittest.TestCase, object):
         # Each face of the cube is made of two triangles.
         return [
             # Lower face (parallel to Ox-Oy plane i.e. horizontal)
-            [np.array([org_x + dx, org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x     , org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x + dx, org_y + dy, org_z     ], dtype=np.float32)],
-            [np.array([org_x,      org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x,      org_y + dy, org_z     ], dtype=np.float32),
-             np.array([org_x + dx, org_y + dy, org_z     ], dtype=np.float32)],
+            [np.array([org_x + dx, org_y, org_z], dtype=np.float32),
+             np.array([org_x, org_y, org_z], dtype=np.float32),
+             np.array([org_x + dx, org_y + dy, org_z], dtype=np.float32)],
+            [np.array([org_x, org_y, org_z], dtype=np.float32),
+             np.array([org_x, org_y + dy, org_z], dtype=np.float32),
+             np.array([org_x + dx, org_y + dy, org_z], dtype=np.float32)],
             # Upper face (parallel to Ox-Oy plane i.e. horizontal)
-            [np.array([org_x,      org_y,      org_z + dz], dtype=np.float32),
-             np.array([org_x + dx, org_y,      org_z + dz], dtype=np.float32),
+            [np.array([org_x, org_y, org_z + dz], dtype=np.float32),
+             np.array([org_x + dx, org_y, org_z + dz], dtype=np.float32),
              np.array([org_x + dx, org_y + dy, org_z + dz], dtype=np.float32)],
-            [np.array([org_x,      org_y + dy, org_z + dz], dtype=np.float32),
-             np.array([org_x,      org_y,      org_z + dz], dtype=np.float32),
+            [np.array([org_x, org_y + dy, org_z + dz], dtype=np.float32),
+             np.array([org_x, org_y, org_z + dz], dtype=np.float32),
              np.array([org_x + dx, org_y + dy, org_z + dz], dtype=np.float32)],
             # Side face parallel to the Ox-Oz plane (vertical),
-            [np.array([org_x,      org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x + dx, org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x + dx, org_y,      org_z + dz], dtype=np.float32)],
-            [np.array([org_x,      org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x + dx, org_y,      org_z + dz], dtype=np.float32),
-             np.array([org_x,      org_y,      org_z + dz], dtype=np.float32)],
+            [np.array([org_x, org_y, org_z], dtype=np.float32),
+             np.array([org_x + dx, org_y, org_z], dtype=np.float32),
+             np.array([org_x + dx, org_y, org_z + dz], dtype=np.float32)],
+            [np.array([org_x, org_y, org_z], dtype=np.float32),
+             np.array([org_x + dx, org_y, org_z + dz], dtype=np.float32),
+             np.array([org_x, org_y, org_z + dz], dtype=np.float32)],
             # Other side face parallel to the Ox-Oz plane,
-            [np.array([org_x,      org_y + dy, org_z     ], dtype=np.float32),
+            [np.array([org_x, org_y + dy, org_z], dtype=np.float32),
              np.array([org_x + dx, org_y + dy, org_z + dz], dtype=np.float32),
-             np.array([org_x + dx, org_y + dy, org_z     ], dtype=np.float32)],
-            [np.array([org_x,      org_y + dy, org_z     ], dtype=np.float32),
-             np.array([org_x,      org_y + dy, org_z + dz], dtype=np.float32),
+             np.array([org_x + dx, org_y + dy, org_z], dtype=np.float32)],
+            [np.array([org_x, org_y + dy, org_z], dtype=np.float32),
+             np.array([org_x, org_y + dy, org_z + dz], dtype=np.float32),
              np.array([org_x + dx, org_y + dy, org_z + dz], dtype=np.float32)],
             # Side face parallel to the Oy-Oz plane (vertical)
-            [np.array([org_x,      org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x,      org_y,      org_z + dz], dtype=np.float32),
-             np.array([org_x,      org_y + dy, org_z + dz], dtype=np.float32)],
-            [np.array([org_x,      org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x,      org_y + dy, org_z + dz], dtype=np.float32),
-             np.array([org_x,      org_y + dy, org_z     ], dtype=np.float32)],
+            [np.array([org_x, org_y, org_z], dtype=np.float32),
+             np.array([org_x, org_y, org_z + dz], dtype=np.float32),
+             np.array([org_x, org_y + dy, org_z + dz], dtype=np.float32)],
+            [np.array([org_x, org_y, org_z], dtype=np.float32),
+             np.array([org_x, org_y + dy, org_z + dz], dtype=np.float32),
+             np.array([org_x, org_y + dy, org_z], dtype=np.float32)],
             # Other side face parallel to the Oy-Oz plane (vertical)
-            [np.array([org_x + dx, org_y,      org_z     ], dtype=np.float32),
+            [np.array([org_x + dx, org_y, org_z], dtype=np.float32),
              np.array([org_x + dx, org_y + dy, org_z + dz], dtype=np.float32),
-             np.array([org_x + dx, org_y,      org_z + dz], dtype=np.float32)],
-            [np.array([org_x + dx, org_y,      org_z     ], dtype=np.float32),
-             np.array([org_x + dx, org_y + dy, org_z     ], dtype=np.float32),
+             np.array([org_x + dx, org_y, org_z + dz], dtype=np.float32)],
+            [np.array([org_x + dx, org_y, org_z], dtype=np.float32),
+             np.array([org_x + dx, org_y + dy, org_z], dtype=np.float32),
              np.array([org_x + dx, org_y + dy, org_z + dz], dtype=np.float32)],
         ]
 
@@ -59,10 +59,10 @@ class TestTileBuilder(unittest.TestCase, object):
         # Define a TriangleSoup setting up some geometry
         ts = TriangleSoup()
         triangles = TestTileBuilder.build_cuboid_as_binary_triangles_array(
-                                    -178.1, -12.845, 300.0, 100., 200., 300.)
+            -178.1, -12.845, 300.0, 100., 200., 300.)
         triangles.extend(
-                    TestTileBuilder.build_cuboid_as_binary_triangles_array(
-                                      -8.1, -1.8, 300.0, 200., 300., 100.))
+            TestTileBuilder.build_cuboid_as_binary_triangles_array(
+                -8.1, -1.8, 300.0, 200., 300., 100.))
         ts.triangles = [triangles]
 
         # Define a tile that will hold the geometry
@@ -73,18 +73,18 @@ class TestTileBuilder(unittest.TestCase, object):
         # held in the TriangleSoup:
         arrays = [{
             'position': ts.getPositionArray(),
-            'normal':   ts.getNormalArray(),
-            'bbox':     ts.getBboxAsFloat()
+            'normal': ts.getNormalArray(),
+            'bbox': ts.getBboxAsFloat()
         }]
         # GlTF uses a y-up coordinate system, and we thus need to realize
         # a z-up to y-up coordinate transform for the cuboids to respect
         # glTF convention (refer to
         # https://github.com/AnalyticalGraphicsInc/3d-tiles/tree/master/specification#gltf-transforms
         # for more details on this matter).
-        transform = np.array([ 1,  0,  0, 0,
-                               0,  0, -1, 0,
-                               0,  1,  0, 0,
-                               0,  0,  0, 1])
+        transform = np.array([1, 0, 0, 0,
+                              0, 0, -1, 0,
+                              0, 1, 0, 0,
+                              0, 0, 0, 1])
         glTF = GlTF.from_binary_arrays(arrays, transform)
         tile_content = B3dm.from_glTF(glTF)
         tile.set_content(tile_content)

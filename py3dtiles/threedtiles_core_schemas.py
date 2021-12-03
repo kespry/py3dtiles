@@ -22,9 +22,9 @@ class BoundingVolumeBoxSchemaWithSample(SchemaWithSample):
         self.set_directory('py3dtiles/jsonschemas')
         self.set_filename('boundingVolume.schema.json')
         self.set_sample(
-          {
-              "box": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-          }
+            {
+                "box": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            }
         )
 
 

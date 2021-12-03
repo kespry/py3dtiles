@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 import unittest
 from py3dtiles import BoundingVolumeBox, HelperTest, Tile, TileSet
 
@@ -31,8 +30,8 @@ class Test_TileSet(unittest.TestCase):
         # set_refine_mode():
         root_tile.set_refine_mode('ADD')
         tile_set.set_root_tile(root_tile)
-        #FIXME bt.add_property_from_array("id",
-        #FIXME                           ["unique id", "another unique id"])
+        # FIXME bt.add_property_from_array("id",
+        # FIXME                           ["unique id", "another unique id"])
         return tile_set
 
     def test_json_encoding(self):
@@ -41,6 +40,7 @@ class Test_TileSet(unittest.TestCase):
     def test_tileset_build_sample_and_validate(self):
         if not self.build_sample().validate():
             self.fail()
+
 
 if __name__ == "__main__":
     unittest.main()

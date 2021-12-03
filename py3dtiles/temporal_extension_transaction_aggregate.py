@@ -8,6 +8,7 @@ class TemporalTransactionAggregate(TemporalTransaction):
     An aggregate of Temporal Primary Transactions (since the base class is
     abstract).
     """
+
     def __init__(self):
         TemporalTransaction.__init__(self)
         self.define_attributes()

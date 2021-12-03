@@ -9,10 +9,11 @@ class Test_TemporalVersion(unittest.TestCase):
     """
     Batch Table extension of the Temporal applicative extension
     """
+
     def test_basics(self):
         helper = HelperTest(lambda x: TemporalVersion().validate(x))
         helper.sample_file_names.append(
-                      'temporal_extension_version_sample.json')
+            'temporal_extension_version_sample.json')
         if not helper.check():
             self.fail()
 
@@ -49,7 +50,7 @@ class Test_TemporalVersion(unittest.TestCase):
         """
         json_tbt = json.loads(self.build_sample().to_json())
         json_tbt_reference = HelperTest().load_json_reference_file(
-                            'temporal_extension_version_sample.json')
+            'temporal_extension_version_sample.json')
         if not json_tbt.items() == json_tbt_reference.items():
             self.fail()
 

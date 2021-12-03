@@ -14,7 +14,7 @@ class HelperTest:
             with open(reference_file_path, 'r') as reference_file:
                 json_reference = json.loads(reference_file.read())
             json_reference.pop('_comment', None)  # Drop the "comment".
-        except:
+        except Exception:
             print(f'Unable to parse reference file {reference_file_path}')
             return None
         return json_reference

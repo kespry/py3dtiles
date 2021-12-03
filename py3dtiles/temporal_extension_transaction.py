@@ -3,6 +3,7 @@ import sys
 import copy
 from .threedtiles_notion import ThreeDTilesNotion
 
+
 class TemporalTransaction(ThreeDTilesNotion):
     """
     Temporal Transaction is an element of the Temporal TileSet extension.

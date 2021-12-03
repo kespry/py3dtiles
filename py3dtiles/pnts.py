@@ -58,7 +58,7 @@ class Pnts(TileContent):
 
         # build TileContent body
         b_len = h.ft_json_byte_length + h.ft_bin_byte_length
-        b_arr = array[PntsHeader.BYTELENGTH:PntsHeader.BYTELENGTH+b_len]
+        b_arr = array[PntsHeader.BYTELENGTH:PntsHeader.BYTELENGTH + b_len]
         b = PntsBody.from_array(h, b_arr)
 
         # build TileContent with header and body

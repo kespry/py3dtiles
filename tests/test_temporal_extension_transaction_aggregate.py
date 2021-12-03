@@ -6,17 +6,18 @@ from py3dtiles import TemporalTransactionAggregate
 from py3dtiles import HelperTest
 from .test_temporal_extension_transaction import Test_TemporalTransaction
 from .test_temporal_extension_primary_transaction \
-                                        import Test_TemporalPrimaryTransaction
+    import Test_TemporalPrimaryTransaction
 
 
 class Test_TemporalTransactionAggregate(unittest.TestCase):
     """
     Transaction Aggregate extension of the Temporal applicative extension
     """
+
     def test_basics(self):
         helper = HelperTest(lambda x: TemporalTransactionAggregate().validate(x))
         helper.sample_file_names.append(
-                      'temporal_extension_transaction_aggregate_sample.json')
+            'temporal_extension_transaction_aggregate_sample.json')
         if not helper.check():
             self.fail()
 
@@ -67,12 +68,12 @@ class Test_TemporalTransactionAggregate(unittest.TestCase):
         """
         json_tt = json.loads(self.build_sample().to_json())
         json_tt_reference = HelperTest().load_json_reference_file(
-                        'temporal_extension_transaction_aggregate_sample.json')
+            'temporal_extension_transaction_aggregate_sample.json')
         # We do not want to compare the identifiers (that must differ):
         Test_TemporalTransactionAggregate.prune_id_from_nested_json_dict(
-                                                                      json_tt)
+            json_tt)
         Test_TemporalTransactionAggregate.prune_id_from_nested_json_dict(
-                                                            json_tt_reference)
+            json_tt_reference)
         if not json_tt.items() == json_tt_reference.items():
             self.fail()
 
@@ -81,6 +82,7 @@ class Test_TemporalTransactionAggregate(unittest.TestCase):
         base_transaction = Test_TemporalTransaction.build_sample()
         tt.replicate_from(base_transaction)
         tt.append_transaction(Test_TemporalPrimaryTransaction.build_sample())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,7 +11,7 @@ class TemporalBatchTableSchemaWithSample(SchemaWithSample):
         self.set_sample(
             {
                 "startDates": ["2018-01-01"],
-                "endDates":   ["2019-01-01"],
+                "endDates": ["2019-01-01"],
                 "featureIds": ["some feature"]
             }
         )
@@ -26,7 +26,7 @@ class TemporalBoundingVolumeSchemaWithSample(SchemaWithSample):
         self.set_sample(
             {
                 "startDate": "2018-01-01",
-                "endDate":   "2019-01-01"
+                "endDate": "2019-01-01"
             }
         )
 
@@ -40,7 +40,7 @@ class TemporalTileSetSchemaWithSample(SchemaWithSample):
         self.set_sample(
             {
                 "startDate": "2018-01-01",
-                "endDate":   "2019-01-01",
+                "endDate": "2019-01-01",
                 "versions": [
                     {
                         "id": 0,
@@ -54,6 +54,7 @@ class TemporalTileSetSchemaWithSample(SchemaWithSample):
                 ]
             }
         )
+
 
 class TemporalTransactionSchemaWithSample(SchemaWithSample):
 
@@ -151,7 +152,7 @@ class TemporalVersionTransitionSchemaWithSample(SchemaWithSample):
                 "startDate": "2018-01-01",
                 "endDate": "2019-01-01",
                 "from": 100,
-                "to":   200,
+                "to": 200,
                 "reason": "Reason of evolution between two versions",
                 "type": "merge",
                 "transactions": [1000, 2000]
