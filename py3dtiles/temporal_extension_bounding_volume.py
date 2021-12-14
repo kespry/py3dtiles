@@ -36,7 +36,7 @@ class TemporalBoundingVolume(Extension, ThreeDTilesNotion):
         for bounding_volume in BoundingVolumeBox.get_children(owner):
             temporal_bv = bounding_volume.get_extension('3DTILES_temporal')
             if not temporal_bv:
-                print(f'This bounding volume lacks its temporal extension.')
+                print(f'{"This bounding volume lacks its temporal extension."}')
                 print('Exiting')
                 sys.exit(1)
             children_tbv.append(temporal_bv)

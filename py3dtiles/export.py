@@ -170,8 +170,7 @@ def arrays2tileset(positions, normals, bboxes, transform, ids=None):
 
     # Export b3dm & tileset
     tileset = treeRoot.to_tileset(transform)
-    # FIXME: what is the node.id format argument for ?
-    f = open("tileset.json".format(node.id), 'w')
+    f = open("tileset.json", 'w')
     f.write(tileset.to_json())
     print("Creating tiles...")
     nodes = treeRoot.all_nodes()
