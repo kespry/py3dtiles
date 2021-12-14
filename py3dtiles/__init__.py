@@ -11,6 +11,7 @@ from .batch_table_hierarchy_extension import BatchTableHierarchy
 from .bounding_volume import BoundingVolume
 from .bounding_volume_box import BoundingVolumeBox
 from .feature_table import Feature
+from .gltf_material import GlTFMaterial
 from .gltf import GlTF
 from .temporal_extension_batch_table import TemporalBatchTable
 from .temporal_extension_bounding_volume import TemporalBoundingVolume
@@ -39,6 +40,7 @@ __all__ = ['B3dm',
            'SchemaValidators',
            'Extension',
            'Feature',
+           'GlTFMaterial',
            'GlTF',
            'Pnts',
            'TemporalBatchTable',

@@ -2,6 +2,7 @@
 import struct
 import numpy as np
 import json
+from .gltf_material import GlTFMaterial
 
 
 class GlTF(object):
@@ -72,7 +73,7 @@ class GlTF(object):
 
     @staticmethod
     def from_binary_arrays(arrays, transform, binary=True, batched=True,
-                           uri=None, textureUri=None):
+                           uri=None, textureUri=None, material=GlTFMaterial()):
         """
         Parameters
         ----------
@@ -133,7 +134,7 @@ class GlTF(object):
 
         glTF.header = compute_header(binVertices, nVertices, bb, transform,
                                      textured, batched, batchLength, uri,
-                                     textureUri)
+                                     textureUri, material)
         glTF.body = np.frombuffer(compute_binary(binVertices, binNormals,
                                   binIds, binUvs), dtype=np.uint8)
 
@@ -149,7 +150,7 @@ def compute_binary(binVertices, binNormals, binIds, binUvs):
 
 
 def compute_header(binVertices, nVertices, bb, transform,
-                   textured, batched, batchLength, uri, textureUri):
+                   textured, batched, batchLength, uri, textureUri, materialProps):
     # Buffer
     meshNb = len(binVertices)
     sizeVce = []
@@ -273,7 +274,9 @@ def compute_header(binVertices, nVertices, bb, transform,
     # Materials
     materials = [{
         'pbrMetallicRoughness': {
-            'metallicFactor': 0
+            'baseColorFactor': materialProps.rgba,
+            'metallicFactor': materialProps.metallicFactor,
+            'roughnessFactor': materialProps.roughnessFactor
         },
         'name': 'Material',
     }]
