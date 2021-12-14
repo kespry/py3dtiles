@@ -65,9 +65,7 @@ class GlTFMaterial():
 
     @staticmethod
     def from_hexa(color_code='#FFFFFF'):
-        material = GlTFMaterial()
         hex = color_code.replace('#', '').replace('0x', '')
         rgb = [int(hex[i:i + 2], 16) / 255 for i in (0, 2, 4)]
-        material.rgba = rgb
 
-        return material
+        return GlTFMaterial(rgb=rgb)
