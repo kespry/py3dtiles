@@ -1,3 +1,7 @@
+import numpy as np
+import sys
+
+
 class GlTFMaterial():
     def __init__(self, metallicFactor=0, roughnessFactor=0, rgb=[1, 1, 1], alpha=1):
         self.metallicFactor = metallicFactor
@@ -12,11 +16,7 @@ class GlTFMaterial():
 
     @metallicFactor.setter
     def metallicFactor(self, value):
-        if value > 1:
-            value = 1
-        if value < 0:
-            value = 0
-        self._metallicFactor = value
+        self._metallicFactor = self.normalize_value(value, max(1, value))
 
     @property
     def roughnessFactor(self):
@@ -24,11 +24,7 @@ class GlTFMaterial():
 
     @roughnessFactor.setter
     def roughnessFactor(self, value):
-        if value > 1:
-            value = 1
-        if value < 0:
-            value = 0
-        self._roughnessFactor = value
+        self._roughnessFactor = self.normalize_value(value, max(1, value))
 
     @property
     def rgba(self):
@@ -36,17 +32,12 @@ class GlTFMaterial():
 
     @rgba.setter
     def rgba(self, values):
-        for value in values:
-            if value > 1:
-                value /= 255
-            if value < 0:
-                value = abs(value / 255)
         if len(values) < 3:
             for i in range(len(values), 3):
                 values.append(0)
         elif len(values) > 4:
             values = values[:4]
-        self._rgba = values
+        self._rgba = self.normalize_color(values)
 
     @property
     def alpha(self):
@@ -54,10 +45,7 @@ class GlTFMaterial():
 
     @alpha.setter
     def alpha(self, value):
-        if value > 1:
-            value /= 255
-        if value < 0:
-            value = abs(value / 255)
+        value = self.normalize_value(value, self.max(value, 1, 255))
         if len(self._rgba) < 4:
             self._rgba.append(value)
         else:
@@ -66,7 +54,23 @@ class GlTFMaterial():
     @staticmethod
     def from_hexa(color_code='#FFFFFF'):
         hex = color_code.replace('#', '').replace('0x', '')
-        length = max(len(hex), 8)
+        length = min(len(hex), 8)
         rgb = [int(hex[i:i + 2], 16) / 255 for i in range(0, length, 2)]
 
         return GlTFMaterial(rgb=rgb)
+
+    @classmethod
+    def normalize_value(cls, value, max):
+        if value < 0:
+            print('The value can\'t be negative')
+            sys.exit(1)
+        return value / max
+
+    @classmethod
+    def max(cls, value, max_1, max_2):
+        return max_1 if value < max_1 else max(max_2, value)
+
+    @classmethod
+    def normalize_color(cls, color):
+        max_value = cls.max(np.max(color), 1, 255)
+        return [cls.normalize_value(value, max_value) for value in color]
