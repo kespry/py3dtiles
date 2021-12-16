@@ -3,12 +3,13 @@ import sys
 
 
 class GlTFMaterial():
-    def __init__(self, metallicFactor=0, roughnessFactor=0, rgb=[1, 1, 1], alpha=1):
+    def __init__(self, metallicFactor=0, roughnessFactor=0, rgb=[1, 1, 1], alpha=1, textureUri=None):
         self.metallicFactor = metallicFactor
         self.roughnessFactor = roughnessFactor
         self.rgba = rgb
         if len(rgb) < 4:
             self.alpha = alpha
+        self.textureUri = textureUri
 
     @property
     def metallicFactor(self):
@@ -50,6 +51,21 @@ class GlTFMaterial():
             self._rgba.append(value)
         else:
             self._rgba[3] = value
+
+    def is_textured(self):
+        return self.textureUri is not None
+
+    def to_dict(self, name, index=0):
+        dictionary = {
+            'pbrMetallicRoughness': {
+                'baseColorFactor': self.rgba,
+                'metallicFactor': self.metallicFactor,
+                'roughnessFactor': self.roughnessFactor
+            },
+            'name': name}
+        if self.is_textured():
+            dictionary['baseColorTexture'] = {'index': index}
+        return dictionary
 
     @staticmethod
     def from_hexa(color_code='#FFFFFF'):

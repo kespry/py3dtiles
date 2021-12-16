@@ -5,7 +5,7 @@ import numpy as np
 import json
 # np.set_printoptions(formatter={'int':hex})
 
-from py3dtiles import TileReader, B3dm, GlTF, TriangleSoup
+from py3dtiles import TileReader, B3dm, GlTF, TriangleSoup, GlTFMaterial
 
 
 class TestTileReader(unittest.TestCase):
@@ -38,7 +38,8 @@ class TestTileBuilder(unittest.TestCase):
         arrays = [{
             'position': positions,
             'normal': normals,
-            'bbox': box
+            'bbox': box,
+            'matIndex': 0
         }]
 
         transform = np.array([
@@ -54,7 +55,7 @@ class TestTileBuilder(unittest.TestCase):
         # get an array
         t.to_array()
         self.assertEqual(t.header.version, 1.0)
-        self.assertEqual(t.header.tile_byte_length, 3076)
+        self.assertEqual(t.header.tile_byte_length, 3080)
         self.assertEqual(t.header.ft_json_byte_length, 0)
         self.assertEqual(t.header.ft_bin_byte_length, 0)
         self.assertEqual(t.header.bt_json_byte_length, 0)
@@ -80,7 +81,8 @@ class TestTexturedTileBuilder(unittest.TestCase):
             'position': positions,
             'normal': normals,
             'uv': uvs,
-            'bbox': box
+            'bbox': box,
+            'matIndex': 0
         }]
 
         transform = np.array([
@@ -89,7 +91,7 @@ class TestTexturedTileBuilder(unittest.TestCase):
             [0, 0, 1, 0],
             [0, 0, 0, 1]], dtype=float)
         transform = transform.flatten('F')
-        glTF = GlTF.from_binary_arrays(arrays, transform, textureUri='squaretexture.jpg')
+        glTF = GlTF.from_binary_arrays(arrays, transform, materials=[GlTFMaterial(textureUri='squaretexture.jpg')])
         t = B3dm.from_glTF(glTF)
 
         # get an array
