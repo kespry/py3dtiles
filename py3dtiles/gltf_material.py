@@ -38,7 +38,7 @@ class GlTFMaterial():
                 values.append(0)
         elif len(values) > 4:
             values = values[:4]
-        self._rgba = self.normalize_color(values)
+        self._rgba = np.array(self.normalize_color(values), dtype=np.float32)
 
     @property
     def alpha(self):
@@ -48,7 +48,7 @@ class GlTFMaterial():
     def alpha(self, value):
         value = self.normalize_value(value, self.max(value, 1, 255))
         if len(self._rgba) < 4:
-            self._rgba.append(value)
+            np.append(self._rgba, value)
         else:
             self._rgba[3] = value
 
@@ -58,7 +58,7 @@ class GlTFMaterial():
     def to_dict(self, name, index=0):
         dictionary = {
             'pbrMetallicRoughness': {
-                'baseColorFactor': self.rgba,
+                'baseColorFactor': self.rgba.tolist(),
                 'metallicFactor': self.metallicFactor,
                 'roughnessFactor': self.roughnessFactor
             },
@@ -71,7 +71,7 @@ class GlTFMaterial():
     def from_hexa(color_code='#FFFFFF'):
         hex = color_code.replace('#', '').replace('0x', '')
         length = min(len(hex), 8)
-        rgb = [int(hex[i:i + 2], 16) / 255 for i in range(0, length, 2)]
+        rgb = [round(int(hex[i:i + 2], 16) / 255, 4) for i in range(0, length, 2)]
 
         return GlTFMaterial(rgb=rgb)
 
@@ -80,11 +80,11 @@ class GlTFMaterial():
         if value < 0:
             print('The value can\'t be negative')
             sys.exit(1)
-        return value / max
+        return round(value / max, 4)
 
     @classmethod
     def max(cls, value, max_1, max_2):
-        return max_1 if value < max_1 else max(max_2, value)
+        return max_1 if value <= max_1 else max(max_2, value)
 
     @classmethod
     def normalize_color(cls, color):
