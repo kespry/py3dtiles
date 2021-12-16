@@ -48,7 +48,7 @@ class GlTFMaterial():
     def alpha(self, value):
         value = self.normalize_value(value, self.max(value, 1, 255))
         if len(self._rgba) < 4:
-            np.append(self._rgba, value)
+            self._rgba = np.append(self._rgba, value)
         else:
             self._rgba[3] = value
 
