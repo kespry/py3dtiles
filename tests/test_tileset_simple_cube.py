@@ -74,7 +74,8 @@ class TestTileBuilder(unittest.TestCase, object):
         arrays = [{
             'position': ts.getPositionArray(),
             'normal': ts.getNormalArray(),
-            'bbox': ts.getBboxAsFloat()
+            'bbox': ts.getBboxAsFloat(),
+            'matIndex': 0
         }]
         # GlTF uses a y-up coordinate system, and we thus need to realize
         # a z-up to y-up coordinate transform for the cuboids to respect

@@ -2,6 +2,7 @@
 import struct
 import numpy as np
 import json
+from .gltf_material import GlTFMaterial
 
 
 class GlTF(object):
@@ -72,7 +73,7 @@ class GlTF(object):
 
     @staticmethod
     def from_binary_arrays(arrays, transform, binary=True, batched=True,
-                           uri=None, textureUri=None):
+                           uri=None, materials=[GlTFMaterial()]):
         """
         Parameters
         ----------
@@ -83,6 +84,7 @@ class GlTF(object):
             arrays['uv']: binary array of vertex texture coordinates
                           (Not implemented yet)
             arrays['bbox']: geometry bounding box (numpy.array)
+            arrays['matIndex']: the index of the material used by the geometry
 
         transform : numpy.array
             World coordinates transformation flattend matrix
@@ -101,6 +103,7 @@ class GlTF(object):
         binUvs = []
         nVertices = []
         bb = []
+        matIndexes = []
         batchLength = 0
         for i, geometry in enumerate(arrays):
             binVertices.append(geometry['position'])
@@ -108,6 +111,7 @@ class GlTF(object):
             n = round(len(geometry['position']) / 12)
             nVertices.append(n)
             bb.append(geometry['bbox'])
+            matIndexes.append(geometry['matIndex'])
             if batched:
                 binIds.append(np.full(n, i, dtype=np.float32))
             if textured:
@@ -132,8 +136,7 @@ class GlTF(object):
             bb = [[[minx, miny, minz], [maxx, maxy, maxz]]]
 
         glTF.header = compute_header(binVertices, nVertices, bb, transform,
-                                     textured, batched, batchLength, uri,
-                                     textureUri)
+                                     textured, batched, batchLength, uri, materials, matIndexes)
         glTF.body = np.frombuffer(compute_binary(binVertices, binNormals,
                                   binIds, binUvs), dtype=np.uint8)
 
@@ -149,7 +152,7 @@ def compute_binary(binVertices, binNormals, binIds, binUvs):
 
 
 def compute_header(binVertices, nVertices, bb, transform,
-                   textured, batched, batchLength, uri, textureUri):
+                   textured, batched, batchLength, uri, meshMaterials, materialIndexes):
     # Buffer
     meshNb = len(binVertices)
     sizeVce = []
@@ -252,7 +255,7 @@ def compute_header(binVertices, nVertices, bb, transform,
                     "POSITION": nAttributes * i,
                     "NORMAL": nAttributes * i + 1
                 },
-                "material": 0,
+                "material": materialIndexes[i],
                 "mode": 4
             }]
         })
@@ -271,12 +274,13 @@ def compute_header(binVertices, nVertices, bb, transform,
         })
 
     # Materials
-    materials = [{
-        'pbrMetallicRoughness': {
-            'metallicFactor': 0
-        },
-        'name': 'Material',
-    }]
+    images = []
+    materials = []
+    for i, mat in enumerate(meshMaterials):
+        material = mat.to_dict('Material' + str(i), len(images))
+        if mat.is_textured():
+            images.append({'uri': mat.textureUri})
+        materials.append(material)
 
     # Final glTF
     header = {
@@ -302,17 +306,12 @@ def compute_header(binVertices, nVertices, bb, transform,
             'sampler': 0,
             'source': 0
         }]
-        header['images'] = [{
-            'uri': textureUri
-        }]
+        header['images'] = images
         header['samplers'] = [{
             "magFilter": 9729,
             "minFilter": 9987,
             "wrapS": 10497,
             "wrapT": 10497
         }]
-        header['materials'][0]['pbrMetallicRoughness']['baseColorTexture'] = {
-            'index': 0
-        }
 
     return header
