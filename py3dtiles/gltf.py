@@ -73,7 +73,7 @@ class GlTF(object):
 
     @staticmethod
     def from_binary_arrays(arrays, transform, binary=True, batched=True,
-                           uri=None, splitted=False, materials=[GlTFMaterial()]):
+                           uri=None, materials=[GlTFMaterial()]):
         """
         Parameters
         ----------
@@ -117,7 +117,7 @@ class GlTF(object):
             if textured:
                 binUvs.append(geometry['uv'])
 
-        if not splitted:
+        if batched:
             binVertices = [b''.join(binVertices)]
             binNormals = [b''.join(binNormals)]
             binUvs = [b''.join(binUvs)]
@@ -262,8 +262,8 @@ def compute_header(binVertices, nVertices, bb, transform,
         if textured:
             meshes[i]['primitives'][0]['attributes']['TEXCOORD_0'] = (
                 nAttributes * i + 2)
-        if batched:
-            meshes[i]['primitives'][0]['attributes']['_BATCHID'] = nAttributes
+    if batched:
+        meshes[0]['primitives'][0]['attributes']['_BATCHID'] = nAttributes
 
     # Nodes
     nodes = []
