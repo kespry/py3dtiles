@@ -64,7 +64,7 @@ class GlTFMaterial():
             },
             'name': name}
         if self.is_textured():
-            dictionary['baseColorTexture'] = {'index': index}
+            dictionary['pbrMetallicRoughness']['baseColorTexture'] = {'index': index}
         return dictionary
 
     @staticmethod
