@@ -138,7 +138,7 @@ class B3dmHeader(TileContentHeader):
         if len(array) != B3dmHeader.BYTELENGTH:
             raise RuntimeError("Invalid header length")
 
-        h.magic_value = "b3dm"
+        h.magic_value = b"b3dm"
         h.version = struct.unpack("i", array[4:8])[0]
         h.tile_byte_length = struct.unpack("i", array[8:12])[0]
         h.ft_json_byte_length = struct.unpack("i", array[12:16])[0]
