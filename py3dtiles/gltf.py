@@ -55,13 +55,15 @@ class GlTF(object):
         if struct.unpack("4s", array[0:4])[0] != b"glTF":
             raise RuntimeError("Array does not contain a binary glTF")
 
-        if struct.unpack("i", array[4:8])[0] != 1:
+        version = struct.unpack("i", array[4:8])[0]
+        if version != 1 and version != 2:
             raise RuntimeError("Unsupported glTF version")
 
         length = struct.unpack("i", array[8:12])[0]
         content_length = struct.unpack("i", array[12:16])[0]
 
-        if struct.unpack("i", array[16:20])[0] != 0:
+        content_type = struct.unpack("i", array[16:20])[0]
+        if content_type != 0 and content_type != 1313821514:  # 1313821514 => JSON
             raise RuntimeError("Unsupported binary glTF content type")
 
         header = struct.unpack(str(content_length) + "s",
