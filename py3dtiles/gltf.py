@@ -69,7 +69,7 @@ class GlTF(object):
         header = struct.unpack(str(content_length) + "s",
                                array[20:20 + content_length])[0]
         glTF.header = json.loads(header.decode("ascii"))
-        glTF.body = array[20 + content_length:length]
+        glTF.body = array[28 + content_length:length]
 
         return glTF
 
