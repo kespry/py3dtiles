@@ -68,6 +68,26 @@ class TriangleSoup:
 
         return ts
 
+    @staticmethod
+    def from_glTF(gltf):
+        header = gltf.header
+        vertices = list()
+        for mesh in header['meshes']:
+            position_index = mesh['primitives'][0]['attributes']['POSITION']
+            buffer_index = header['accessors'][position_index]['bufferView']
+
+            byte_offset = header['bufferViews'][buffer_index]['byteOffset']
+            byte_length = header['bufferViews'][buffer_index]['byteLength']
+            positions = gltf.body[byte_offset:byte_offset + byte_length]
+
+            for i in range(0, byte_length, 12):
+                vertices.append(np.array(struct.unpack('fff', positions[i:i + 12].tobytes()), dtype=np.float32))
+
+        ts = TriangleSoup()
+        ts.triangles.append([vertices[n:n + 3] for n in range(0, len(vertices), 3)])
+
+        return ts
+
     def getPositionArray(self):
         """
         Parameters
