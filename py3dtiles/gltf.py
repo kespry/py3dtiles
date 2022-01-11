@@ -6,6 +6,8 @@ from .gltf_material import GlTFMaterial
 
 
 class GlTF(object):
+    HEADER_LENGTH = 12
+    CHUNK_HEADER_LENGTH = 8
 
     def __init__(self):
         self.header = {}
@@ -20,7 +22,8 @@ class GlTF(object):
         padding = np.array([0 for i in range(0, (4 - len(self.body) % 4) % 4)],
                            dtype=np.uint8)
 
-        length = 28 + len(self.body) + len(scene) + len(padding)
+        length = GlTF.HEADER_LENGTH + (2 * GlTF.CHUNK_HEADER_LENGTH)
+        length += len(self.body) + len(scene) + len(padding)
         binaryHeader = np.array([0x46546C67,  # "glTF" magic
                                  2,  # version
                                  length], dtype=np.uint32)
@@ -60,16 +63,19 @@ class GlTF(object):
             raise RuntimeError("Unsupported glTF version")
 
         length = struct.unpack("i", array[8:12])[0]
-        content_length = struct.unpack("i", array[12:16])[0]
+        json_chunk_length = struct.unpack("i", array[12:16])[0]
 
-        content_type = struct.unpack("i", array[16:20])[0]
-        if content_type != 0 and content_type != 1313821514:  # 1313821514 => JSON
+        chunk_type = struct.unpack("i", array[16:20])[0]
+        if chunk_type != 0 and chunk_type != 1313821514:  # 1313821514 => 'JSON'
             raise RuntimeError("Unsupported binary glTF content type")
 
-        header = struct.unpack(str(content_length) + "s",
-                               array[20:20 + content_length])[0]
+        index = GlTF.HEADER_LENGTH + GlTF.CHUNK_HEADER_LENGTH  # Skip the header and the JSON chunk header
+        header = struct.unpack(str(json_chunk_length) + "s",
+                               array[index:index + json_chunk_length])[0]
         glTF.header = json.loads(header.decode("ascii"))
-        glTF.body = array[28 + content_length:length]
+
+        index += json_chunk_length + GlTF.CHUNK_HEADER_LENGTH  # Skip the JSON chunk data and the binary chunk header
+        glTF.body = array[index:length]
 
         return glTF
 
