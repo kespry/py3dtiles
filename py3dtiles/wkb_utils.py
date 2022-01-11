@@ -84,7 +84,7 @@ class TriangleSoup:
 
             for i in range(0, byte_length, 12):
                 vertices.append(np.array(struct.unpack('fff', positions[i:i + 12].tobytes()), dtype=np.float32))
-            
+
             if 'TEXCOORD_0' in mesh['primitives'][0]['attributes']:
                 texture_index = mesh['primitives'][0]['attributes']['TEXCOORD_0']
                 buffer_index = header['accessors'][texture_index]['bufferView']

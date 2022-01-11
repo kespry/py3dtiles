@@ -27,7 +27,8 @@ from .tile import Tile
 from .tileset import TileSet
 from .helper_test import HelperTest
 from .pnts import Pnts
-from .utils import TileReader, TilesetReader, convert_to_ecef
+from .tileset_reader import TilesetReader
+from .utils import TileReader, convert_to_ecef
 from .wkb_utils import TriangleSoup
 
 __version__ = '1.1.0'
