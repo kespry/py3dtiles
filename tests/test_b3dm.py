@@ -3,9 +3,10 @@
 import unittest
 import numpy as np
 import json
+from filecmp import cmp
 # np.set_printoptions(formatter={'int':hex})
 
-from py3dtiles import TileReader, B3dm, GlTF, TriangleSoup, GlTFMaterial
+from py3dtiles import TileReader, B3dm, GlTF, TriangleSoup, GlTFMaterial, TilesetReader
 
 
 class TestTileReader(unittest.TestCase):
@@ -23,6 +24,40 @@ class TestTileReader(unittest.TestCase):
         with open('tests/dragon_low_gltf_header.json', 'r') as f:
             gltf_header = json.loads(f.read())
         self.assertDictEqual(gltf_header, tile.body.glTF.header)
+
+
+class TestTilesetReader(unittest.TestCase):
+
+    def test_read(self):
+        reader = TilesetReader()
+        tileset = reader.read_tileset('tests/b3dm_tileset/')
+        tiles = tileset.get_root_tile().get_children()
+        tile_1_content = tiles[0].get_content()
+        self.assertEqual(tile_1_content.header.version, 1.0)
+        self.assertEqual(tile_1_content.header.tile_byte_length, 6176)
+        self.assertEqual(tile_1_content.header.ft_json_byte_length, 0)
+        self.assertEqual(tile_1_content.header.ft_bin_byte_length, 0)
+        self.assertEqual(tile_1_content.header.bt_json_byte_length, 64)
+        self.assertEqual(tile_1_content.header.bt_bin_byte_length, 0)
+        self.assertEqual(len(tile_1_content.body.glTF.to_array()), 6084)
+
+        tile_2_content = tiles[1].get_content()
+        self.assertEqual(tile_2_content.header.version, 1.0)
+        self.assertEqual(tile_2_content.header.tile_byte_length, 6792)
+        self.assertEqual(tile_2_content.header.ft_json_byte_length, 0)
+        self.assertEqual(tile_2_content.header.ft_bin_byte_length, 0)
+        self.assertEqual(tile_2_content.header.bt_json_byte_length, 92)
+        self.assertEqual(tile_2_content.header.bt_bin_byte_length, 0)
+        self.assertEqual(len(tile_2_content.body.glTF.to_array()), 6672)
+
+    def test_write(self):
+        reader = TilesetReader()
+        tileset = reader.read_tileset('tests/b3dm_tileset/')
+        tileset.write_to_directory("junk/test_write_b3dm/")
+
+        self.assertTrue(cmp('tests/b3dm_tileset/tileset.json', 'junk/test_write_b3dm/tileset.json'))
+        self.assertTrue(cmp('tests/b3dm_tileset/tiles/0.b3dm', 'junk/test_write_b3dm/tiles/0.b3dm'))
+        self.assertTrue(cmp('tests/b3dm_tileset/tiles/1.b3dm', 'junk/test_write_b3dm/tiles/1.b3dm'))
 
 
 class TestTileBuilder(unittest.TestCase):
