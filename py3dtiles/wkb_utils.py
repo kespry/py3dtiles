@@ -72,6 +72,8 @@ class TriangleSoup:
     def from_glTF(gltf):
         header = gltf.header
         vertices = list()
+        uvs = list()
+        ids = list()
         for mesh in header['meshes']:
             position_index = mesh['primitives'][0]['attributes']['POSITION']
             buffer_index = header['accessors'][position_index]['bufferView']
@@ -82,9 +84,35 @@ class TriangleSoup:
 
             for i in range(0, byte_length, 12):
                 vertices.append(np.array(struct.unpack('fff', positions[i:i + 12].tobytes()), dtype=np.float32))
+            
+            if 'TEXCOORD_0' in mesh['primitives'][0]['attributes']:
+                texture_index = mesh['primitives'][0]['attributes']['TEXCOORD_0']
+                buffer_index = header['accessors'][texture_index]['bufferView']
+
+                byte_offset = header['bufferViews'][buffer_index]['byteOffset']
+                byte_length = header['bufferViews'][buffer_index]['byteLength']
+                tex_coords = gltf.body[byte_offset:byte_offset + byte_length]
+
+                for i in range(0, byte_length, 8):
+                    uvs.append(np.array(struct.unpack('ff', tex_coords[i:i + 8].tobytes()), dtype=np.float32))
+
+            if '_BATCHID' in mesh['primitives'][0]['attributes']:
+                batchid_index = mesh['primitives'][0]['attributes']['_BATCHID']
+                buffer_index = header['accessors'][batchid_index]['bufferView']
+
+                byte_offset = header['bufferViews'][buffer_index]['byteOffset']
+                byte_length = header['bufferViews'][buffer_index]['byteLength']
+                batch_ids = gltf.body[byte_offset:byte_offset + byte_length]
+
+                for i in range(0, byte_length, 4):
+                    ids.append(np.array(struct.unpack('f', batch_ids[i:i + 4].tobytes()), dtype=np.float32))
 
         ts = TriangleSoup()
         ts.triangles.append([vertices[n:n + 3] for n in range(0, len(vertices), 3)])
+        if len(uvs) > 0:
+            ts.triangles.append([uvs[n:n + 2] for n in range(0, len(uvs), 2)])
+        if len(ids) > 0:
+            ts.triangles.append(ids)
 
         return ts
 
