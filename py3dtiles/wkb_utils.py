@@ -74,12 +74,13 @@ class TriangleSoup:
         vertices = list()
         uvs = list()
         ids = list()
-        for mesh in header['meshes']:
+        mat_indexes = list()
+        for mesh_index, mesh in enumerate(header['meshes']):
             position_index = mesh['primitives'][0]['attributes']['POSITION']
             buffer_index = header['accessors'][position_index]['bufferView']
-
-            byte_offset = header['bufferViews'][buffer_index]['byteOffset']
-            byte_length = header['bufferViews'][buffer_index]['byteLength']
+            vertex_count = header['accessors'][position_index]['count']
+            byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][position_index]['byteOffset']
+            byte_length = vertex_count * 12
             positions = gltf.body[byte_offset:byte_offset + byte_length]
 
             for i in range(0, byte_length, 12):
@@ -88,9 +89,9 @@ class TriangleSoup:
             if 'TEXCOORD_0' in mesh['primitives'][0]['attributes']:
                 texture_index = mesh['primitives'][0]['attributes']['TEXCOORD_0']
                 buffer_index = header['accessors'][texture_index]['bufferView']
-
-                byte_offset = header['bufferViews'][buffer_index]['byteOffset']
-                byte_length = header['bufferViews'][buffer_index]['byteLength']
+                tex_count = header['accessors'][position_index]['count']
+                byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][position_index]['byteOffset']
+                byte_length = tex_count * 8
                 tex_coords = gltf.body[byte_offset:byte_offset + byte_length]
 
                 for i in range(0, byte_length, 8):
@@ -99,20 +100,23 @@ class TriangleSoup:
             if '_BATCHID' in mesh['primitives'][0]['attributes']:
                 batchid_index = mesh['primitives'][0]['attributes']['_BATCHID']
                 buffer_index = header['accessors'][batchid_index]['bufferView']
+                id_count = header['accessors'][position_index]['count']
+                byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][position_index]['byteOffset']
+                byte_length = id_count * 4
+                batch_ids = [struct.unpack('f', gltf.body[i:i + 4].tobytes())[0] for i in range(byte_offset, byte_offset + byte_length, 4)]
+            else:
+                batch_ids = [mesh_index for i in range(0, vertex_count)]
+            for id in batch_ids:
+                ids.append(np.array([id, mesh_index], dtype=np.float32))
 
-                byte_offset = header['bufferViews'][buffer_index]['byteOffset']
-                byte_length = header['bufferViews'][buffer_index]['byteLength']
-                batch_ids = gltf.body[byte_offset:byte_offset + byte_length]
-
-                for i in range(0, byte_length, 4):
-                    ids.append(np.array(struct.unpack('f', batch_ids[i:i + 4].tobytes()), dtype=np.float32))
+            mat_indexes.append(mesh['primitives'][0]['material'])
 
         ts = TriangleSoup()
         ts.triangles.append([vertices[n:n + 3] for n in range(0, len(vertices), 3)])
+        ts.triangles.append(ids)
+        ts.triangles.append(np.array(mat_indexes, dtype=np.float32))
         if len(uvs) > 0:
             ts.triangles.append([uvs[n:n + 2] for n in range(0, len(uvs), 2)])
-        if len(ids) > 0:
-            ts.triangles.append(ids)
 
         return ts
 
