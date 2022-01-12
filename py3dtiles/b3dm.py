@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import struct
 import numpy as np
+import json
 
 from .tile_content import TileContent, TileContentHeader, TileContentBody
 from .tile_content import TileContentType
@@ -59,7 +60,7 @@ class B3dm(TileContent):
             raise RuntimeError("Invalid byte length in header")
 
         # build TileContent body
-        b_arr = (array[B3dmHeader.BYTELENGTH:h.tile_byte_length - B3dmHeader.BYTELENGTH])
+        b_arr = array[B3dmHeader.BYTELENGTH:h.tile_byte_length]
         b = B3dmBody.from_array(h, b_arr)
 
         # build TileContent with header and body
@@ -138,7 +139,7 @@ class B3dmHeader(TileContentHeader):
         if len(array) != B3dmHeader.BYTELENGTH:
             raise RuntimeError("Invalid header length")
 
-        h.magic_value = "b3dm"
+        h.magic_value = b"b3dm"
         h.version = struct.unpack("i", array[4:8])[0]
         h.tile_byte_length = struct.unpack("i", array[8:12])[0]
         h.ft_json_byte_length = struct.unpack("i", array[12:16])[0]
@@ -216,5 +217,7 @@ class B3dmBody(TileContentBody):
         # b.feature_table = ft
         # b.batch_table = bt
         b.glTF = glTF
+        if th.bt_json_byte_length > 0:
+            b.batch_table.attributes = json.loads(array[0:th.bt_json_byte_length].tobytes().decode('utf-8'))
 
         return b
