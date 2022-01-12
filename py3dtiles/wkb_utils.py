@@ -89,8 +89,8 @@ class TriangleSoup:
             if 'TEXCOORD_0' in mesh['primitives'][0]['attributes']:
                 texture_index = mesh['primitives'][0]['attributes']['TEXCOORD_0']
                 buffer_index = header['accessors'][texture_index]['bufferView']
-                tex_count = header['accessors'][position_index]['count']
-                byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][position_index]['byteOffset']
+                tex_count = header['accessors'][texture_index]['count']
+                byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][texture_index]['byteOffset']
                 byte_length = tex_count * 8
                 tex_coords = gltf.body[byte_offset:byte_offset + byte_length]
 
@@ -100,8 +100,8 @@ class TriangleSoup:
             if '_BATCHID' in mesh['primitives'][0]['attributes']:
                 batchid_index = mesh['primitives'][0]['attributes']['_BATCHID']
                 buffer_index = header['accessors'][batchid_index]['bufferView']
-                id_count = header['accessors'][position_index]['count']
-                byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][position_index]['byteOffset']
+                id_count = header['accessors'][batchid_index]['count']
+                byte_offset = header['bufferViews'][buffer_index]['byteOffset'] + header['accessors'][batchid_index]['byteOffset']
                 byte_length = id_count * 4
                 batch_ids = [struct.unpack('f', gltf.body[i:i + 4].tobytes())[0] for i in range(byte_offset, byte_offset + byte_length, 4)]
             else:
@@ -116,7 +116,7 @@ class TriangleSoup:
         ts.triangles.append(ids)
         ts.triangles.append(np.array(mat_indexes, dtype=np.float32))
         if len(uvs) > 0:
-            ts.triangles.append([uvs[n:n + 2] for n in range(0, len(uvs), 2)])
+            ts.triangles.append([uvs[n:n + 3] for n in range(0, len(uvs), 3)])
 
         return ts
 
