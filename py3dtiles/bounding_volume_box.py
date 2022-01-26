@@ -244,7 +244,7 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
         # We reset to some dummy state of this Bounding Volume Box so we
         # can add up in place the boxes of the owner's children
         print("Warning: overwriting box bounding volume.")
-        for child in owner.get_children():
+        for child in owner.attributes['children']:
             # FIXME have the transform method return a new object and
             # define another method to apply_transform in place
             bounding_volume = copy.deepcopy(child.get_bounding_volume())
