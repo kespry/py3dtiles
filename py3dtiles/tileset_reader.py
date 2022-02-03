@@ -13,6 +13,20 @@ class TilesetReader(object):
     def __init__(self):
         self.tile_reader = TileReader()
 
+    def read_tilesets(self, paths):
+        """
+        Read tilesets.
+        :param paths: the paths to the tilesets
+        :return: a list of TileSet
+        """
+        tilesets = list()
+        for path in paths:
+            try:
+                tilesets.append(self.reader.read_tileset(path))
+            except Exception:
+                print("Couldn't read the tileset", path)
+        return tilesets
+
     def read_tileset(self, path):
         """
         param: path: Path to a directory containing the tileset.json
