@@ -22,7 +22,7 @@ class TilesetReader(object):
         tilesets = list()
         for path in paths:
             try:
-                tilesets.append(self.reader.read_tileset(path))
+                tilesets.append(self.read_tileset(path))
             except Exception:
                 print("Couldn't read the tileset", path)
         return tilesets
