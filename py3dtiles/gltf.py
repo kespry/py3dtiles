@@ -255,7 +255,7 @@ def compute_header(binVertices, nVertices, bb, transform,
 
     # Meshes
     meshes = []
-    nAttributes = 3
+    nAttributes = 2 + int(textured) + int(batched)
     for i in range(0, meshNb):
         meshes.append({
             'primitives': [{
