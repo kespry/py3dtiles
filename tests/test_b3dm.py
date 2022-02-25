@@ -43,10 +43,10 @@ class TestTilesetReader(unittest.TestCase):
 
         tile_2_content = tiles[1].get_content()
         self.assertEqual(tile_2_content.header.version, 1.0)
-        self.assertEqual(tile_2_content.header.tile_byte_length, 6796)
+        self.assertEqual(tile_2_content.header.tile_byte_length, 6800)
         self.assertEqual(tile_2_content.header.ft_json_byte_length, 4)
         self.assertEqual(tile_2_content.header.ft_bin_byte_length, 0)
-        self.assertEqual(tile_2_content.header.bt_json_byte_length, 92)
+        self.assertEqual(tile_2_content.header.bt_json_byte_length, 96)
         self.assertEqual(tile_2_content.header.bt_bin_byte_length, 0)
         self.assertEqual(len(tile_2_content.body.glTF.to_array()), 6672)
 

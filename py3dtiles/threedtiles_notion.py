@@ -110,9 +110,9 @@ class ThreeDTilesNotion(object):
         """
         # First encode the concerned attributes as a json string
         as_json = self.to_json()
-        # and make sure it respects a mandatory 4-byte alignement (refer e.g.
+        # and make sure it respects a mandatory 8-byte alignement (refer e.g.
         # to batch table documentation)
-        as_json += ' ' * (4 - len(as_json) % 4)
+        as_json += ' ' * (8 - len(as_json) % 8)
         # eventually return an array of binaries representing the
         # considered ThreeDTilesNotion
         return numpy.frombuffer(as_json.encode(), dtype=numpy.uint8)
