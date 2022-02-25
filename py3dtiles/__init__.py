@@ -10,6 +10,7 @@ from .batch_table import BatchTable
 from .batch_table_hierarchy_extension import BatchTableHierarchy
 from .bounding_volume import BoundingVolume
 from .bounding_volume_box import BoundingVolumeBox
+from .feature_table import FeatureTable
 from .pnts_feature_table import PntsFeature
 from .gltf_material import GlTFMaterial
 from .gltf import GlTF
@@ -40,6 +41,7 @@ __all__ = ['B3dm',
            'convert_to_ecef',
            'SchemaValidators',
            'Extension',
+           'FeatureTable',
            'PntsFeature',
            'GlTFMaterial',
            'GlTF',

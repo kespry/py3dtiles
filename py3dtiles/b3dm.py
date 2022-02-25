@@ -7,13 +7,13 @@ from .tile_content import TileContent, TileContentHeader, TileContentBody
 from .tile_content import TileContentType
 from .gltf import GlTF
 from .batch_table import BatchTable
-from .pnts_feature_table import PntsFeatureTable
+from .feature_table import FeatureTable
 
 
 class B3dm(TileContent):
 
     @staticmethod
-    def from_glTF(gltf, ft=None,bt=None):
+    def from_glTF(gltf, ft=None, bt=None):
         """
         Parameters
         ----------
@@ -116,6 +116,8 @@ class B3dmHeader(TileContentHeader):
 
         if body.feature_table is not None:
             fth_arr = body.feature_table.to_array()
+            # ftb_arr = body.feature_table.body.to_array()
+
             self.tile_byte_length += len(fth_arr)
             self.ft_json_byte_length = len(fth_arr)    
 
@@ -126,7 +128,6 @@ class B3dmHeader(TileContentHeader):
             self.tile_byte_length += len(bth_arr)
             self.bt_json_byte_length = len(bth_arr)
 
-        # ftb_arr = body.feature_table.body.to_array()
 
     @staticmethod
     def from_array(array):
@@ -161,7 +162,7 @@ class B3dmHeader(TileContentHeader):
 class B3dmBody(TileContentBody):
     def __init__(self):
         self.batch_table = BatchTable()
-        self.feature_table = PntsFeatureTable()
+        self.feature_table = FeatureTable()
         self.glTF = GlTF()
 
     def to_array(self):
@@ -222,10 +223,12 @@ class B3dmBody(TileContentBody):
 
         # build TileContent body with feature table
         b = B3dmBody()
-        # b.feature_table = ft
-        # b.batch_table = bt
         b.glTF = glTF
+
+        if th.ft_json_byte_length > 0:
+            b.feature_table.attributes = json.loads(array[0:th.ft_json_byte_length].tobytes().decode('utf-8'))
+
         if th.bt_json_byte_length > 0:
-            b.batch_table.attributes = json.loads(array[0:th.bt_json_byte_length].tobytes().decode('utf-8'))
+            b.batch_table.attributes = json.loads(array[th.ft_json_byte_length:th.ft_json_byte_length + th.bt_json_byte_length].tobytes().decode('utf-8'))
 
         return b

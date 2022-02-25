@@ -115,4 +115,4 @@ class ThreeDTilesNotion(object):
         as_json += ' ' * (4 - len(as_json) % 4)
         # eventually return an array of binaries representing the
         # considered ThreeDTilesNotion
-        return numpy.fromstring(as_json, dtype=numpy.uint8)
+        return numpy.frombuffer(as_json.encode(), dtype=numpy.uint8)
