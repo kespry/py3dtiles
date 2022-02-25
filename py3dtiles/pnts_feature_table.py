@@ -419,4 +419,4 @@ class PntsFeatureTable(object):
         pos = self.body.positions(n)
         col = self.body.colors(n)
         return PntsFeature.from_array(self.header.positions_dtype, pos,
-                                  self.header.colors_dtype, col)
+                                      self.header.colors_dtype, col)

@@ -119,7 +119,7 @@ class B3dmHeader(TileContentHeader):
             # ftb_arr = body.feature_table.body.to_array()
 
             self.tile_byte_length += len(fth_arr)
-            self.ft_json_byte_length = len(fth_arr)    
+            self.ft_json_byte_length = len(fth_arr)
 
         if body.batch_table is not None:
             bth_arr = body.batch_table.to_array()
@@ -127,7 +127,6 @@ class B3dmHeader(TileContentHeader):
 
             self.tile_byte_length += len(bth_arr)
             self.bt_json_byte_length = len(bth_arr)
-
 
     @staticmethod
     def from_array(array):
@@ -169,7 +168,7 @@ class B3dmBody(TileContentBody):
         # TODO : export feature table
         array = self.glTF.to_array()
         if self.batch_table is not None:
-            array = np.concatenate((self.batch_table.to_array(), array))            
+            array = np.concatenate((self.batch_table.to_array(), array))
         if self.feature_table is not None:
             array = np.concatenate((self.feature_table.to_array(), array))
         return array
