@@ -5,7 +5,7 @@ from enum import Enum
 import numpy as np
 
 
-class Feature(object):
+class PntsFeature(object):
 
     def __init__(self):
         self.positions = {}
@@ -25,7 +25,7 @@ class Feature(object):
 
     @staticmethod
     def from_values(x, y, z, red=None, green=None, blue=None):
-        f = Feature()
+        f = PntsFeature()
 
         f.positions = {'X': x, 'Y': y, 'Z': z}
 
@@ -56,7 +56,7 @@ class Feature(object):
         f : Feature
         """
 
-        f = Feature()
+        f = PntsFeature()
 
         # extract positions
         f.positions = {}
@@ -93,7 +93,7 @@ class SemanticPoint(Enum):
     BATCH_ID = 8
 
 
-class FeatureTableHeader(object):
+class PntsFeatureTableHeader(object):
 
     def __init__(self):
         # point semantics
@@ -160,7 +160,7 @@ class FeatureTableHeader(object):
         fth : FeatureTableHeader
         """
 
-        fth = FeatureTableHeader()
+        fth = PntsFeatureTableHeader()
         fth.points_length = npoints
 
         # search positions
@@ -220,7 +220,7 @@ class FeatureTableHeader(object):
         """
 
         jsond = json.loads(array.tostring().decode('utf-8'))
-        fth = FeatureTableHeader()
+        fth = PntsFeatureTableHeader()
 
         # search position
         if "POSITION" in jsond:
@@ -265,7 +265,7 @@ class FeatureTableHeader(object):
         return fth
 
 
-class FeatureTableBody(object):
+class PntsFeatureTableBody(object):
 
     def __init__(self):
         self.positions_arr = []
@@ -283,7 +283,7 @@ class FeatureTableBody(object):
     @staticmethod
     def from_features(fth, features):
 
-        b = FeatureTableBody()
+        b = PntsFeatureTableBody()
 
         # extract positions
         b.positions_itemsize = fth.positions_dtype.itemsize
@@ -315,7 +315,7 @@ class FeatureTableBody(object):
         ftb : FeatureTableBody
         """
 
-        b = FeatureTableBody()
+        b = PntsFeatureTableBody()
 
         npoints = fth.points_length
 
@@ -345,11 +345,11 @@ class FeatureTableBody(object):
         return []
 
 
-class FeatureTable(object):
+class PntsFeatureTable(object):
 
     def __init__(self):
-        self.header = FeatureTableHeader()
-        self.body = FeatureTableBody()
+        self.header = PntsFeatureTableHeader()
+        self.body = PntsFeatureTableBody()
 
     def npoints(self):
         return self.header.points_length
@@ -376,15 +376,15 @@ class FeatureTable(object):
         # build feature table header
         fth_len = th.ft_json_byte_length
         fth_arr = array[0:fth_len]
-        fth = FeatureTableHeader.from_array(fth_arr)
+        fth = PntsFeatureTableHeader.from_array(fth_arr)
 
         # build feature table body
         ftb_len = th.ft_bin_byte_length
         ftb_arr = array[fth_len:fth_len + ftb_len]
-        ftb = FeatureTableBody.from_array(fth, ftb_arr)
+        ftb = PntsFeatureTableBody.from_array(fth, ftb_arr)
 
         # build feature table
-        ft = FeatureTable()
+        ft = PntsFeatureTable()
         ft.header = fth
         ft.body = ftb
 
@@ -406,10 +406,10 @@ class FeatureTable(object):
         ft : FeatureTable
         """
 
-        fth = FeatureTableHeader.from_dtype(pdtype, cdtype, len(features))
-        ftb = FeatureTableBody.from_features(fth, features)
+        fth = PntsFeatureTableHeader.from_dtype(pdtype, cdtype, len(features))
+        ftb = PntsFeatureTableBody.from_features(fth, features)
 
-        ft = FeatureTable()
+        ft = PntsFeatureTable()
         ft.header = fth
         ft.body = ftb
 
@@ -418,5 +418,5 @@ class FeatureTable(object):
     def feature(self, n):
         pos = self.body.positions(n)
         col = self.body.colors(n)
-        return Feature.from_array(self.header.positions_dtype, pos,
+        return PntsFeature.from_array(self.header.positions_dtype, pos,
                                   self.header.colors_dtype, col)

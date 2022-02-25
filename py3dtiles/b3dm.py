@@ -7,7 +7,7 @@ from .tile_content import TileContent, TileContentHeader, TileContentBody
 from .tile_content import TileContentType
 from .gltf import GlTF
 from .batch_table import BatchTable
-from .feature_table import FeatureTable
+from .pnts_feature_table import PntsFeatureTable
 
 
 class B3dm(TileContent):
@@ -161,7 +161,7 @@ class B3dmHeader(TileContentHeader):
 class B3dmBody(TileContentBody):
     def __init__(self):
         self.batch_table = BatchTable()
-        self.feature_table = FeatureTable()
+        self.feature_table = PntsFeatureTable()
         self.glTF = GlTF()
 
     def to_array(self):

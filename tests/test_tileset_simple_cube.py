@@ -1,4 +1,4 @@
-from py3dtiles.feature_table import FeatureTable
+from py3dtiles.pnts_feature_table import PntsFeatureTable
 from py3dtiles.batch_table import BatchTable
 import unittest
 import numpy as np

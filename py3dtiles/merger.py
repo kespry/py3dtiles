@@ -6,7 +6,7 @@ from py3dtiles import TileReader
 from py3dtiles.points.utils import split_aabb
 from py3dtiles.points.transformations import inverse_matrix
 from py3dtiles.points.task.pnts_writer import points_to_pnts
-from py3dtiles.feature_table import SemanticPoint
+from py3dtiles.pnts_feature_table import SemanticPoint
 
 
 def _get_root_tile(tileset, filename):

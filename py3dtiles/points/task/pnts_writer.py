@@ -26,9 +26,9 @@ def points_to_pnts(name, points, out_folder, include_rgb):
     pdt = np.dtype([('X', '<f4'), ('Y', '<f4'), ('Z', '<f4')])
     cdt = np.dtype([('Red', 'u1'), ('Green', 'u1'), ('Blue', 'u1')]) if include_rgb else None
 
-    ft = py3dtiles.feature_table.FeatureTable()
-    ft.header = py3dtiles.feature_table.FeatureTableHeader.from_dtype(pdt, cdt, count)
-    ft.body = py3dtiles.feature_table.FeatureTableBody.from_array(ft.header, points)
+    ft = py3dtiles.pnts_feature_table.PntsFeatureTable()
+    ft.header = py3dtiles.pnts_feature_table.PntsFeatureTableHeader.from_dtype(pdt, cdt, count)
+    ft.body = py3dtiles.pnts_feature_table.PntsFeatureTableBody.from_array(ft.header, points)
 
     body = py3dtiles.pnts.PntsBody()
     body.feature_table = ft

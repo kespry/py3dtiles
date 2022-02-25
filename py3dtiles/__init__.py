@@ -10,7 +10,7 @@ from .batch_table import BatchTable
 from .batch_table_hierarchy_extension import BatchTableHierarchy
 from .bounding_volume import BoundingVolume
 from .bounding_volume_box import BoundingVolumeBox
-from .feature_table import Feature
+from .pnts_feature_table import PntsFeature
 from .gltf_material import GlTFMaterial
 from .gltf import GlTF
 from .temporal_extension_batch_table import TemporalBatchTable
@@ -40,7 +40,7 @@ __all__ = ['B3dm',
            'convert_to_ecef',
            'SchemaValidators',
            'Extension',
-           'Feature',
+           'PntsFeature',
            'GlTFMaterial',
            'GlTF',
            'Pnts',
