@@ -90,8 +90,8 @@ class TestTileBuilder(unittest.TestCase):
         # get an array
         t.to_array()
         self.assertEqual(t.header.version, 1.0)
-        self.assertEqual(t.header.tile_byte_length, 3016)
-        self.assertEqual(t.header.ft_json_byte_length, 0)
+        self.assertEqual(t.header.tile_byte_length, 3036)
+        self.assertEqual(t.header.ft_json_byte_length, 20)
         self.assertEqual(t.header.ft_bin_byte_length, 0)
         self.assertEqual(t.header.bt_json_byte_length, 0)
         self.assertEqual(t.header.bt_bin_byte_length, 0)
@@ -132,8 +132,8 @@ class TestTexturedTileBuilder(unittest.TestCase):
         # get an array
         t.to_array()
         self.assertEqual(t.header.version, 1.0)
-        self.assertEqual(t.header.tile_byte_length, 1616)
-        self.assertEqual(t.header.ft_json_byte_length, 0)
+        self.assertEqual(t.header.tile_byte_length, 1636)
+        self.assertEqual(t.header.ft_json_byte_length, 20)
         self.assertEqual(t.header.ft_bin_byte_length, 0)
         self.assertEqual(t.header.bt_json_byte_length, 0)
         self.assertEqual(t.header.bt_bin_byte_length, 0)

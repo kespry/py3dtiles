@@ -30,7 +30,9 @@ class B3dm(TileContent):
 
         tb = B3dmBody()
         tb.glTF = gltf
-        tb.feature_table = ft
+        if ft is not None:
+            tb.feature_table = ft
+        tb.feature_table.attributes["BATCH_LENGTH"] = gltf.batch_length
         tb.batch_table = bt
 
         th = B3dmHeader()
@@ -162,6 +164,7 @@ class B3dmBody(TileContentBody):
     def __init__(self):
         self.batch_table = BatchTable()
         self.feature_table = FeatureTable()
+        self.feature_table.add_property_from_array("BATCH_LENGTH", 0)
         self.glTF = GlTF()
 
     def to_array(self):

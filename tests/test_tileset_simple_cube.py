@@ -1,4 +1,3 @@
-from py3dtiles.feature_table import FeatureTable
 from py3dtiles.batch_table import BatchTable
 import unittest
 import numpy as np
@@ -90,15 +89,10 @@ class TestTileBuilder(unittest.TestCase, object):
                               0, 0, 0, 1])
         glTF = GlTF.from_binary_arrays(arrays, transform)
 
-        ft = FeatureTable()
-        batch_length = 2
-
-        ft.add_property_from_array("BATCH_LENGTH", batch_length)
-
         bt = BatchTable()
-        ids = ["0", "1"]
+        ids = ["0"]
         bt.add_property_from_array("id", ids)
-        tile_content = B3dm.from_glTF(glTF, ft, bt)
+        tile_content = B3dm.from_glTF(glTF, bt=bt)
         tile.set_content(tile_content)
 
         # Define the TileSet that will hold the (single) tile
