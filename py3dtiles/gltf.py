@@ -112,7 +112,7 @@ class GlTF(object):
         binUvs = [[] for _ in range(nMaterials)]
         nVertices = [0 for _ in range(nMaterials)]
         bb = [[] for _ in range(nMaterials)]
-        glTF.batch_length = [0 for _ in range(nMaterials)]
+        glTF.batch_length = 0
         for i, geometry in enumerate(arrays):
             matIndex = geometry['matIndex']
             binVertices[matIndex].append(geometry['position'])
@@ -126,8 +126,8 @@ class GlTF(object):
                 binUvs[matIndex].append(geometry['uv'])
 
         if batched:
+            glTF.batch_length = len(arrays)
             for i in range(0, len(binVertices)):
-                glTF.batch_length = len(arrays)
                 binVertices[i] = b''.join(binVertices[i])
                 binNormals[i] = b''.join(binNormals[i])
                 binUvs[i] = b''.join(binUvs[i])
@@ -248,7 +248,7 @@ def compute_header(binVertices, nVertices, bb, transform,
                 'byteOffset': int(round(1 / 3 * sum(sizeVce[0:i]))),
                 'componentType': 5126,
                 'count': nVertices[i],
-                'max': [batchLength[i]],
+                'max': [batchLength],
                 'min': [0],
                 'type': "SCALAR"
             })
