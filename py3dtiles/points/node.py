@@ -4,7 +4,7 @@ import os
 import json
 
 from py3dtiles import TileReader
-from py3dtiles.feature_table import SemanticPoint
+from py3dtiles.pnts_feature_table import SemanticPoint
 from py3dtiles.points.utils import name_to_filename, node_from_name, SubdivisionType, aabb_size_to_subdivision_type
 from py3dtiles.points.points_grid import Grid
 from py3dtiles.points.distance import xyz_to_child_index

@@ -12,6 +12,7 @@ class GlTF(object):
     def __init__(self):
         self.header = {}
         self.body = None
+        self.batch_length = 0
 
     def to_array(self):  # glb
         scene = json.dumps(self.header, separators=(',', ':'))
@@ -112,7 +113,7 @@ class GlTF(object):
         nVertices = []
         bb = []
         matIndexes = []
-        batchLength = 0
+        glTF.batch_length = 0
         for i, geometry in enumerate(arrays):
             binVertices.append(geometry['position'])
             binNormals.append(geometry['normal'])
@@ -131,7 +132,7 @@ class GlTF(object):
             binUvs = [b''.join(binUvs)]
             binIds = [b''.join(binIds)]
             nVertices = [sum(nVertices)]
-            batchLength = len(arrays)
+            glTF.batch_length = len(arrays)
             [minx, miny, minz] = bb[0][0]
             [maxx, maxy, maxz] = bb[0][1]
             for box in bb[1:]:
@@ -144,7 +145,7 @@ class GlTF(object):
             bb = [[[minx, miny, minz], [maxx, maxy, maxz]]]
 
         glTF.header = compute_header(binVertices, nVertices, bb, transform,
-                                     textured, batched, batchLength, uri, materials, matIndexes)
+                                     textured, batched, glTF.batch_length, uri, materials, matIndexes)
         glTF.body = np.frombuffer(compute_binary(binVertices, binNormals,
                                   binIds, binUvs), dtype=np.uint8)
 

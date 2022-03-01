@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 # np.set_printoptions(formatter={'int':hex})
 
-from py3dtiles import TileReader, Feature, Pnts
+from py3dtiles import TileReader, PntsFeature, Pnts
 
 
 class TestTileReader(unittest.TestCase):
@@ -40,7 +40,7 @@ class TestTileBuilder(unittest.TestCase):
             f = tread.body.feature_table.feature(i)
             p = f.positions
             pos = np.array([(p['X'], p['Y'], p['Z'])], dtype=pdt).view('uint8')
-            newf = Feature.from_array(pdt, pos)
+            newf = PntsFeature.from_array(pdt, pos)
             features.append(newf)
 
         # create a TileContent
@@ -83,7 +83,7 @@ class TestTileBuilder(unittest.TestCase):
             pos = np.array([(p['X'], p['Y'], p['Z'])], dtype=pdt).view('uint8')
             col = np.array([(c['Red'], c['Green'], c['Blue'])],
                            dtype=cdt).view('uint8')
-            newf = Feature.from_array(pdt, pos, cdt, col)
+            newf = PntsFeature.from_array(pdt, pos, cdt, col)
             features.append(newf)
 
         # create a TileContent

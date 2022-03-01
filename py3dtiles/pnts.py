@@ -4,7 +4,7 @@ import numpy as np
 
 from .tile_content import TileContent, TileContentHeader, TileContentBody
 from .tile_content import TileContentType
-from .feature_table import FeatureTable
+from .pnts_feature_table import PntsFeatureTable
 
 
 class Pnts(TileContent):
@@ -24,7 +24,7 @@ class Pnts(TileContent):
         tile content : TileContent
         """
 
-        ft = FeatureTable.from_features(pdtype, cdtype, features)
+        ft = PntsFeatureTable.from_features(pdtype, cdtype, features)
 
         tb = PntsBody()
         tb.feature_table = ft
@@ -141,7 +141,7 @@ class PntsHeader(TileContentHeader):
 
 class PntsBody(TileContentBody):
     def __init__(self):
-        self.feature_table = FeatureTable()
+        self.feature_table = PntsFeatureTable()
         # TODO : self.batch_table = BatchTable()
 
     def to_array(self):
@@ -164,7 +164,7 @@ class PntsBody(TileContentBody):
         # build feature table
         ft_len = th.ft_json_byte_length + th.ft_bin_byte_length
         ft_arr = array[0:ft_len]
-        ft = FeatureTable.from_array(th, ft_arr)
+        ft = PntsFeatureTable.from_array(th, ft_arr)
 
         # build batch table
         # bt_len = th.bt_json_byte_length + th.bt_bin_byte_length
