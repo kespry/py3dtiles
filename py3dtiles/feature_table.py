@@ -7,7 +7,8 @@ class FeatureTable(ThreeDTilesNotion):
     """
     Only the JSON header has been implemented for now. According to the feature
     table documentation, the binary body is useful for storing long arrays of
-    data (better performances)
+    data (better performances).
+    TODO: Implement a body and a header with their own to_array/from_array
     """
 
     def __init__(self):
