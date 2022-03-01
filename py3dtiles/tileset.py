@@ -91,12 +91,10 @@ class TileSet(ThreeDTilesNotion):
           - all the tiles content of the Tiles used by the Tileset.
         :param directory: the target directory name
         """
-        # Make sure the TileSet is aligned with its children Tiles.
-        self.sync_with_children()
-
         # Create the output directory
         target_dir = pathlib.Path(directory).expanduser()
         pathlib.Path(target_dir).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(target_dir, 'tiles').mkdir(parents=True, exist_ok=True)
 
         # Prior to writing the TileSet, the future location of the enclosed
         # Tile's content (set as their respective TileContent uri) must be
@@ -107,11 +105,20 @@ class TileSet(ThreeDTilesNotion):
                                               f'{index}.b3dm'))
 
         # Proceed with the writing of the TileSet per se:
-        pathlib.Path(target_dir, 'tiles').mkdir(parents=True, exist_ok=True)
-        tileset_file = open(os.path.join(target_dir, 'tileset.json'), 'w')
-        tileset_file.write(self.to_json())
-        tileset_file.close()
+        self.write_as_json(target_dir)
 
         # Terminate with the writing of the tiles content:
         for index, tile in enumerate(all_tiles):
             tile.write_content(directory)
+
+    def write_as_json(self, directory):
+        """
+        Write the tileset as a JSON file.
+        :param directory: the target directory name
+        """
+        # Make sure the TileSet is aligned with its children Tiles.
+        self.sync_with_children()
+
+        tileset_file = open(os.path.join(directory, 'tileset.json'), 'w')
+        tileset_file.write(self.to_json())
+        tileset_file.close()
