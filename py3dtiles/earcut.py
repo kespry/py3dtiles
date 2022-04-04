@@ -347,7 +347,7 @@ def findHoleBridge(hole, outerNode):
 
         if hx >= p.x and p.x >= mx and pointInTriangle(hx_or_qx, hy, mx, my, qx_or_hx, hy, p.x, p.y):
 
-            tan = abs(hy - p.y) / (hx - p.x) # tangential
+            tan = abs(hy - p.y) / (hx - p.x) if (hx - p.x) != 0 else abs(hy - p.y) # tangential
 
             if (tan < tanMin or (tan == tanMin and p.x > m.x)) and locallyInside(p, hole):
                 m = p

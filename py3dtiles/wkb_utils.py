@@ -287,8 +287,8 @@ def triangulate(polygon, additionalPolygons=[]):
         vect2 = polygon[0][(i) % len(polygon[0])] - polygon[0][(i - 1) % len(polygon[0])]
         norm1 = np.linalg.norm(vect1)
         norm2 = np.linalg.norm(vect2)
-        vect1 = vect1 / norm1 if norm1 > 0 else vect1
-        vect2 = vect2 / norm2 if norm2 > 0 else vect2
+        vect1 = vect1 / norm1 if norm1 != 0 else vect1
+        vect2 = vect2 / norm2 if norm2 != 0 else vect2
         vectProd += np.cross(vect1, vect2)
 
     polygon2D = []
