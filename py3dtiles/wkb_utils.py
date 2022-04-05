@@ -50,7 +50,7 @@ class TriangleSoup:
             if len(polygon) == 1 and len(polygon[0]) == 3:
                 triangles = [polygon]
                 triangles.extend(additionalPolygons)
-            else: 
+            else:
                 triangles = triangulate(polygon, additionalPolygons)
             for array, tri in zip(trianglesArray, triangles):
                 array += tri
