@@ -47,7 +47,11 @@ class TriangleSoup:
         for i in range(0, len(multipolygons[0])):
             polygon = multipolygons[0][i]
             additionalPolygons = [mp[i] for mp in multipolygons[1:]]
-            triangles = triangulate(polygon, additionalPolygons)
+            if len(polygon) == 1 and len(polygon[0]) == 3:
+                triangles = [polygon]
+                triangles.extend(additionalPolygons)
+            else: 
+                triangles = triangulate(polygon, additionalPolygons)
             for array, tri in zip(trianglesArray, triangles):
                 array += tri
             """if(len(polygon) != 1):
