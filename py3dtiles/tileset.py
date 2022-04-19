@@ -101,8 +101,7 @@ class TileSet(ThreeDTilesNotion):
         # specified:
         all_tiles = self.get_root_tile().get_children()
         for index, tile in enumerate(all_tiles):
-            tile.set_content_uri(os.path.join('tiles',
-                                              f'{index}.b3dm'))
+            tile.set_content_uri('tiles/' + f'{index}.b3dm')
 
         # Proceed with the writing of the TileSet per se:
         self.write_as_json(target_dir)
