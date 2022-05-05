@@ -239,7 +239,7 @@ def vertexAttributeToArray(triangles):
     array = []
     for face in triangles:
         for vertex in face:
-            array.append(vertex)
+            array.append(np.array(vertex,dtype=np.float32))
     return array
 
 
