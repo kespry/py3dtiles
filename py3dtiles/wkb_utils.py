@@ -172,7 +172,7 @@ class TriangleSoup:
             if norm == 0:
                 normals.append(np.array([0, 0, 1], dtype=np.float32))
             else:
-                normals.append(N / norm)
+                normals.append((N / norm).astype(np.float32))
 
         verticeArray = faceAttributeToArray(normals)
         return b''.join(verticeArray)
@@ -239,7 +239,8 @@ def vertexAttributeToArray(triangles):
     array = []
     for face in triangles:
         for vertex in face:
-            array.append(np.array(vertex,dtype=np.float32))
+            array.append(vertex.astype(np.float32))
+
     return array
 
 
