@@ -126,7 +126,7 @@ class BoundingVolumeBox(ThreeDTilesNotion, BoundingVolume, object):
 
     def set_from_list(self, box_list):
         self.attributes["box"] = numpy.array([float(i) for i in box_list],
-                                             dtype=numpy.float)
+                                             dtype=float)
 
     def set_from_array(self, box_array):
         self.attributes["box"] = box_array
