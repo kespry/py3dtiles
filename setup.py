@@ -13,7 +13,7 @@ requirements = (
     "psycopg2-binary",
     "liblas",
     "laspy",
-    "numba",
+    "numba==0.56.4",
     "pyproj",
     "psutil",
     "lz4",
