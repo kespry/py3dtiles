@@ -3,7 +3,7 @@ dist: bionic
 
 language: python
 python:
-  - "3.6"
+  - "3.9"
 
 before_install:
   - sudo add-apt-repository universe
@@ -26,7 +26,7 @@ jobs:
         - py3dtiles info tests/pointCloudRGB.pnts
     - stage: "Markdown link checks"
       language: node_js
-      node_js: 12
+      node_js: 14
       script:
         - npm install --global remark-cli remark-validate-links
         - remark -u validate-links .
