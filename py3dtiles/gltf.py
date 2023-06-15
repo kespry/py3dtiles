@@ -211,8 +211,14 @@ def compute_header(binVertices, nVertices, bb, transform,
         bufferViews.append({
             'buffer': 0,
             'byteLength': int(round(sum(sizeVce) / 3)),
-            'byteOffset': int(round(8 / 3 * sum(sizeVce))) if textured
-            else 2 * sum(sizeVce),
+            'byteOffset': (2 * sum(sizeVce)) + (int(textured) * int(round(2 * sum(sizeVce) / 3))),
+            'target': 34962
+        })
+    if vertex_colored:
+        bufferViews.append({
+            'buffer': 0,
+            'byteLength': sum(sizeVce),
+            'byteOffset': (2 * sum(sizeVce)) + (int(textured) * int(round(2 * sum(sizeVce) / 3))) + (int(batched) * int(round(sum(sizeVce) / 3))),
             'target': 34962
         })
 
