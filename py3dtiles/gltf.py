@@ -94,6 +94,7 @@ class GlTF(object):
                           (Not implemented yet)
             arrays['bbox']: geometry bounding box (numpy.array)
             arrays['matIndex']: the index of the material used by the geometry
+            arrays['vertex_color']: the vertex colors
 
         transform : numpy.array
             World coordinates transformation flattend matrix
@@ -106,10 +107,12 @@ class GlTF(object):
         glTF = GlTF()
         nMaterials = len(materials)
         textured = 'uv' in arrays[0]
+        vertex_colored = 'vertex_color' in arrays[0]
         binVertices = [[] for _ in range(nMaterials)]
         binNormals = [[] for _ in range(nMaterials)]
         binIds = [[] for _ in range(nMaterials)]
         binUvs = [[] for _ in range(nMaterials)]
+        binColors = [[] for _ in range(nMaterials)]
         nVertices = [0 for _ in range(nMaterials)]
         bb = [[] for _ in range(nMaterials)]
         glTF.batch_length = 0
@@ -124,6 +127,8 @@ class GlTF(object):
                 binIds[matIndex].append(np.full(n, i, dtype=np.float32))
             if textured:
                 binUvs[matIndex].append(geometry['uv'])
+            if vertex_colored:
+                binColors[matIndex].append(geometry['vertex_color'])
 
         if batched:
             glTF.batch_length = len(arrays)
@@ -132,6 +137,7 @@ class GlTF(object):
                 binNormals[i] = b''.join(binNormals[i])
                 binUvs[i] = b''.join(binUvs[i])
                 binIds[i] = b''.join(binIds[i])
+                binColors[i] = b''.join(binColors[i])
                 [minx, miny, minz] = bb[i][0][0]
                 [maxx, maxy, maxz] = bb[i][0][1]
                 for box in bb[i][1:]:
@@ -144,23 +150,24 @@ class GlTF(object):
                 bb[i] = [[minx, miny, minz], [maxx, maxy, maxz]]
 
         glTF.header = compute_header(binVertices, nVertices, bb, transform,
-                                     textured, batched, glTF.batch_length, uri, materials)
+                                     textured, batched, glTF.batch_length, uri, materials, vertex_colored)
         glTF.body = np.frombuffer(compute_binary(binVertices, binNormals,
-                                  binIds, binUvs), dtype=np.uint8)
+                                  binIds, binUvs, binColors), dtype=np.uint8)
 
         return glTF
 
 
-def compute_binary(binVertices, binNormals, binIds, binUvs):
+def compute_binary(binVertices, binNormals, binIds, binUvs, binColors):
     bv = b''.join(binVertices)
     bn = b''.join(binNormals)
     bid = b''.join(binIds)
     buv = b''.join(binUvs)
-    return bv + bn + buv + bid
+    bc = b''.join(binColors)
+    return bv + bn + buv + bid + bc
 
 
 def compute_header(binVertices, nVertices, bb, transform,
-                   textured, batched, batchLength, uri, meshMaterials):
+                   textured, batched, batchLength, uri, meshMaterials, vertex_colored):
     # Buffer
     meshNb = len(binVertices)
     sizeVce = []
@@ -204,8 +211,14 @@ def compute_header(binVertices, nVertices, bb, transform,
         bufferViews.append({
             'buffer': 0,
             'byteLength': int(round(sum(sizeVce) / 3)),
-            'byteOffset': int(round(8 / 3 * sum(sizeVce))) if textured
-            else 2 * sum(sizeVce),
+            'byteOffset': (2 * sum(sizeVce)) + (int(textured) * int(round(2 * sum(sizeVce) / 3))),
+            'target': 34962
+        })
+    if vertex_colored:
+        bufferViews.append({
+            'buffer': 0,
+            'byteLength': sum(sizeVce),
+            'byteOffset': (2 * sum(sizeVce)) + (int(textured) * int(round(2 * sum(sizeVce) / 3))) + (int(batched) * int(round(sum(sizeVce) / 3))),
             'target': 34962
         })
 
@@ -244,7 +257,7 @@ def compute_header(binVertices, nVertices, bb, transform,
             })
         if batched:
             accessors.append({
-                'bufferView': 3 if textured else 2,
+                'bufferView': 2 + int(textured),
                 'byteOffset': int(round(1 / 3 * sum(sizeVce[0:i]))),
                 'componentType': 5126,
                 'count': nVertices[i],
@@ -252,10 +265,20 @@ def compute_header(binVertices, nVertices, bb, transform,
                 'min': [0],
                 'type': "SCALAR"
             })
+        if vertex_colored:
+            accessors.append({
+                'bufferView': 2 + int(textured) + int(batched),
+                'byteOffset': sum(sizeVce[0:i]),
+                'componentType': 5126,
+                'count': nVertices[i],
+                'max': [1, 1, 1],
+                'min': [0, 0, 0],
+                'type': "VEC3"
+            })
 
     # Meshes
     meshes = []
-    nAttributes = 2 + int(textured) + int(batched)
+    nAttributes = 2 + int(textured) + int(batched) + int(vertex_colored)
     for i in range(0, meshNb):
         meshes.append({
             'primitives': [{
@@ -270,7 +293,9 @@ def compute_header(binVertices, nVertices, bb, transform,
         if textured:
             meshes[i]['primitives'][0]['attributes']['TEXCOORD_0'] = (nAttributes * i) + 2
         if batched:
-            meshes[i]['primitives'][0]['attributes']['_BATCHID'] = (nAttributes * i) + 3 if textured else (nAttributes * i) + 2
+            meshes[i]['primitives'][0]['attributes']['_BATCHID'] = (nAttributes * i) + 2 + int(textured)
+        if vertex_colored:
+            meshes[i]['primitives'][0]['attributes']['COLOR_0'] = (nAttributes * i) + 2 + int(textured) + int(batched)
 
     # Nodes
     nodes = []
