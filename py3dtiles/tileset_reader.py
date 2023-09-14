@@ -47,6 +47,7 @@ class TilesetReader(object):
         tile.set_geometric_error(json_tile['geometricError'])
         uri = os.path.join(path, json_tile['content']['uri'])
         tile.set_content(self.tile_reader.read_file(uri))
+        tile.set_content_uri(json_tile['content']['uri'])
         tile.set_transform(json_tile['transform'])
         tile.set_refine_mode(json_tile['refine'])
 
