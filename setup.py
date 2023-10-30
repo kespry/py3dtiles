@@ -10,6 +10,7 @@ requirements = (
     "pyproj",
     "cython",
     "triangle",
+    "psycopg2-binary",
     "liblas",
     "laspy",
     "numba",
