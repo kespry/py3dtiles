@@ -6,22 +6,19 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 
 requirements = (
-    "numpy>=1.9.0,<1.25",
+    "numpy",
     "pyproj",
     "cython",
     "triangle",
-    "psycopg2-binary",
     "liblas",
     "laspy",
-    "numba==0.56.4",
+    "numba",
     "pyproj",
     "psutil",
     "lz4",
     "pyzmq",
     "jsonschema",
-    "pywavefront",
-    "rdp",
-    "shapely",
+    "pywavefront"
 )
 
 dev_requirements = (
